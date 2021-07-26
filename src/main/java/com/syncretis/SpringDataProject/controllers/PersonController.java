@@ -3,9 +3,7 @@ package com.syncretis.SpringDataProject.controllers;
 import com.syncretis.SpringDataProject.models.Person;
 import com.syncretis.SpringDataProject.services.PersonService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -19,9 +17,18 @@ public class PersonController {
     public PersonController(PersonService personService) {
         this.personService = personService;
     }
-
-    @GetMapping
+    @GetMapping(value ="/get")
     public List<Person> getPerson(){
         return personService.getPersons();
+    }
+
+    @PostMapping(value = "/post")
+    public void createNewPerson(@RequestBody Person person){
+        personService.addNewPerson(person);
+    }
+
+    @DeleteMapping(value = "/delete/{id}")
+    public void deletePerson(@PathVariable("id") Long id){
+        personService.deletePersons(id);
     }
 }

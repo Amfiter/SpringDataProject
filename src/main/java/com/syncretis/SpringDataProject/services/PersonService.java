@@ -17,8 +17,22 @@ public class PersonService {
         this.personRepository = personRepository;
     }
 
-    public List<Person> getPersons(){
-       return personRepository.findAll();
+    public List<Person> getPersons() {
+        return personRepository.findAll();
+    }
+
+    public void addNewPerson(Person person) {
+        System.out.println(person);
+        personRepository.save(person);
+    }
+
+    public void deletePersons(Long id) {
+        boolean personExists = personRepository.existsById(id);
+        if(!personExists){
+            throw new IllegalStateException("person with id = "+ id + " does't exist ");
+        }else{
+            personRepository.deleteById(id);
+        }
     }
 
 }

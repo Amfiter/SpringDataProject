@@ -1,10 +1,7 @@
 package com.syncretis.SpringDataProject.models;
 
-import com.sun.istack.NotNull;
-
 import javax.persistence.*;
 import java.util.List;
-import java.util.StringJoiner;
 
 @Entity
 @Table(name = "department")
@@ -14,12 +11,11 @@ public class Department {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
-    @Column(name = "name",unique = true)
-    @NotNull
+
+    @Column(name = "name",unique = true,nullable = false)
     private String name;
 
-    @OneToMany(fetch = FetchType.LAZY,
-            mappedBy = "department",
+    @OneToMany(mappedBy = "department",
             cascade = CascadeType.ALL)
     private List<Person> personList;
 
@@ -53,10 +49,10 @@ public class Department {
 
     @Override
     public String toString() {
-        return new StringJoiner(", ", Department.class.getSimpleName() + "[", "]")
-                .add("id=" + id)
-                .add("name='" + name + "'")
-                .toString();
+        return "Department{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                '}';
     }
 }
 
