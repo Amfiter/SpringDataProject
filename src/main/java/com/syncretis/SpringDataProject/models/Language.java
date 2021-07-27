@@ -20,6 +20,14 @@ public class Language {
     public Language() {
     }
 
+    public List<Person> getPersons() {
+        return persons;
+    }
+
+    public void setPersons(List<Person> persons) {
+        this.persons = persons;
+    }
+
     public Language(String name) {
         this.name = name;
     }

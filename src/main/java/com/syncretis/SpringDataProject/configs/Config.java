@@ -120,7 +120,8 @@ public class Config {
                     List.of(kostya, nikita, serega, nastya)
             );
 
-
+//            Language english1 = languageRepository.findByName("English");
+//            log.info(english1.getPersons().toString());
 //            personRepository.deleteById(1L);
 //            departmentRepository.deleteById(1L);
 //
