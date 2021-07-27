@@ -2,7 +2,7 @@ package com.syncretis.SpringDataProject.models;
 
 import javax.persistence.*;
 import java.util.Date;
-import java.util.StringJoiner;
+import java.util.List;
 
 @Entity
 @Table(name = "person")
@@ -20,29 +20,61 @@ public class Person {
     private String secondName;
 
     @Column(name = "birthday",nullable = false)
+    @Temporal(TemporalType.DATE)
     private Date birthday;
+
+    @OneToOne(fetch = FetchType.EAGER,cascade = CascadeType.REMOVE)
+    @JoinColumn(name = "document_id", referencedColumnName = "id")
+    private Document document;
 
     @ManyToOne
     @JoinColumn(name = "department_id",nullable = false)
     private Department department;
 
+    @ManyToMany
+    @JoinTable(name = "persons_languages",
+            joinColumns = @JoinColumn(name = "person_id"),
+            inverseJoinColumns = @JoinColumn(name = "language_id")
+    )
+    private List<Language> languageList;
+
     public Person() {
     }
 
-    public Person(String firstName, String secondName, Date birthday, Department department) {
+    public Person(String firstName, String secondName, Date birthday, Department department, List<Language> languageList,Document document) {
         this.firstName = firstName;
         this.secondName = secondName;
         this.birthday = birthday;
         this.department = department;
+        this.languageList = languageList;
+        this.document = document;
     }
-    public Person(Long id, String firstName, String secondName, Date birthday, Department department) {
+
+    public Person(Long id, String firstName, String secondName, Date birthday, Department department, List<Language> languageList,Document document) {
         this.id = id;
         this.firstName = firstName;
         this.secondName = secondName;
         this.birthday = birthday;
         this.department = department;
+        this.languageList = languageList;
+        this.document = document;
     }
 
+    public Document getDocument() {
+        return document;
+    }
+
+    public List<Language> getLanguageList() {
+        return languageList;
+    }
+
+    public void setLanguageList(List<Language> languageList) {
+        this.languageList = languageList;
+    }
+
+    public void setDocument(Document document) {
+        this.document = document;
+    }
 
     public Long getId() {
         return id;
@@ -91,7 +123,9 @@ public class Person {
                 ", firstName='" + firstName + '\'' +
                 ", secondName='" + secondName + '\'' +
                 ", birthday=" + birthday +
+                ", document=" + document +
                 ", department=" + department +
+                ", languageList=" + languageList +
                 '}';
     }
 }
