@@ -12,7 +12,7 @@ public class Department {
     @Column(name = "id")
     private Long id;
 
-    @Column(name = "name",unique = true,nullable = false)
+    @Column(name = "name", unique = true, nullable = false)
     private String name;
 
     @OneToMany(mappedBy = "department",
@@ -47,11 +47,20 @@ public class Department {
         this.name = name;
     }
 
+    public List<Person> getPersonList() {
+        return personList;
+    }
+
+    public void setPersonList(List<Person> personList) {
+        this.personList = personList;
+    }
+
     @Override
     public String toString() {
         return "Department{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
+                ", personList=" + personList +
                 '}';
     }
 }

@@ -1,6 +1,7 @@
 package com.syncretis.SpringDataProject.models;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.util.Date;
 import java.util.List;
 
@@ -13,22 +14,23 @@ public class Person {
     @Column(name = "id")
     private Long id;
 
-    @Column(name = "first_name",nullable = false)
+    @Column(name = "first_name", nullable = false)
     private String firstName;
 
-    @Column(name = "second_name",nullable = false)
+    @Column(name = "second_name", nullable = false)
+    @NotNull(message = "Surname cannot be null")
     private String secondName;
 
-    @Column(name = "birthday",nullable = false)
+    @Column(name = "birthday", nullable = false)
     @Temporal(TemporalType.DATE)
     private Date birthday;
 
-    @OneToOne(fetch = FetchType.EAGER,cascade = CascadeType.REMOVE)
+    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
     @JoinColumn(name = "document_id", referencedColumnName = "id")
     private Document document;
 
-    @ManyToOne
-    @JoinColumn(name = "department_id",nullable = false)
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "department_id", nullable = false)
     private Department department;
 
     @ManyToMany
@@ -41,7 +43,7 @@ public class Person {
     public Person() {
     }
 
-    public Person(String firstName, String secondName, Date birthday, Department department, List<Language> languageList,Document document) {
+    public Person(String firstName, String secondName, Date birthday, Department department, List<Language> languageList, Document document) {
         this.firstName = firstName;
         this.secondName = secondName;
         this.birthday = birthday;
@@ -50,7 +52,7 @@ public class Person {
         this.document = document;
     }
 
-    public Person(Long id, String firstName, String secondName, Date birthday, Department department, List<Language> languageList,Document document) {
+    public Person(Long id, String firstName, String secondName, Date birthday, Department department, List<Language> languageList, Document document) {
         this.id = id;
         this.firstName = firstName;
         this.secondName = secondName;

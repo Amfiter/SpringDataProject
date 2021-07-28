@@ -1,9 +1,7 @@
 package com.syncretis.SpringDataProject.services;
 
 import com.syncretis.SpringDataProject.models.Department;
-import com.syncretis.SpringDataProject.models.Person;
 import com.syncretis.SpringDataProject.repositories.DepartmentRepository;
-import com.syncretis.SpringDataProject.repositories.PersonRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

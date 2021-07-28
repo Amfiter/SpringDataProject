@@ -9,119 +9,133 @@ import com.syncretis.SpringDataProject.repositories.DepartmentRepository;
 import com.syncretis.SpringDataProject.repositories.DocumentRepository;
 import com.syncretis.SpringDataProject.repositories.LanguageRepository;
 import com.syncretis.SpringDataProject.repositories.PersonRepository;
-import org.springframework.boot.CommandLineRunner;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
+import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.Date;
 import java.util.List;
 import java.util.logging.Logger;
 
-@Configuration
+@Service
+@Transactional
 public class Config {
     Logger log = Logger.getLogger(SpringDataProjectApplication.class.getName());
+    PersonRepository personRepository;
+    DepartmentRepository departmentRepository;
+    LanguageRepository languageRepository;
+    DocumentRepository documentRepository;
 
-    @Bean
-    CommandLineRunner commandLineRunner(PersonRepository personRepository,
-                                        DepartmentRepository departmentRepository,
-                                        LanguageRepository languageRepository,
-                                        DocumentRepository documentRepository
+    public Config(PersonRepository personRepository,
+                  DepartmentRepository departmentRepository,
+                  LanguageRepository languageRepository,
+                  DocumentRepository documentRepository
     ) {
-        return args -> {
-            Department defence = new Department(
-                    "Department of defence"
-            );
-            Department anything = new Department(
-                    "Department of anything"
-            );
-            Department seversk = new Department(
-                    "Department of seversk"
-            );
-            Department knowledge = new Department(
-                    "Department of knowledge"
-            );
-            departmentRepository.saveAll(
-                    List.of(defence, seversk, anything, knowledge)
-            );
+        this.personRepository = personRepository;
+        this.departmentRepository = departmentRepository;
+        this.languageRepository = languageRepository;
+        this.documentRepository = documentRepository;
+    }
 
-            Language english = new Language(
-                    "English"
-            );
-            Language dutch = new Language(
-                    "Dautch"
-            );
-            Language kyrgyz = new Language(
-                    "Kyrgyz"
-            );
-            Language russian = new Language(
-                    "Russian"
-            );
-            languageRepository.saveAll(
-                    List.of(english, dutch, kyrgyz, russian)
-            );
-            Document diploma = new Document(
-                    "1234567890",
-                    new Date(122, 12, 4)
-            );
-            Document passport = new Document(
-                    "0987654321",
-                    new Date(123, 8, 28)
-            );
-            Document passport1 = new Document(
-                    "123441234",
-                    new Date(123, 8, 28)
-            );
-            Document passport2 = new Document(
-                    "9876573342",
-                    new Date(123, 8, 28)
-            );
-            Document newDoc = new Document(
-                    "новый документ",
-                    new Date(123, 8, 28)
-            );
-            documentRepository.saveAll(
-                    List.of(diploma, passport, passport1, passport2, newDoc)
-            );
-            Person nastya = new Person(
-                    "Nastya",
-                    "Chernichenko",
-                    new Date(96, 8, 4),
-                    departmentRepository.getById(4L),
-                    List.of(languageRepository.getById(1L), languageRepository.getById(2L)),
-                    documentRepository.findAll().get(0)
-            );
-            Person serega = new Person(
-                    "Serega",
-                    "Filatov",
-                    new Date(96, 8, 4),
-                    departmentRepository.getById(2L),
-                    List.of(english, dutch),
-                    documentRepository.findAll().get(1)
+    public void run() {
+        Department defence = new Department(
+                "Department of defence"
+        );
+        Department anything = new Department(
+                "Department of anything"
+        );
+        Department seversk = new Department(
+                "Department of seversk"
+        );
+        Department knowledge = new Department(
+                "Department of knowledge"
+        );
+        departmentRepository.saveAll(
+                List.of(defence, seversk, anything, knowledge)
+        );
 
-            );
-            Person nikita = new Person(
-                    "Nikita",
-                    "Zheksenov",
-                    new Date(96, 8, 28),
-                    departmentRepository.getById(1L),
-                    List.of(kyrgyz),
-                    documentRepository.findAll().get(2)
-            );
-            Person kostya = new Person(
-                    "Kostya",
-                    "Pestekhin",
-                    new Date(78, 8, 28),
-                    departmentRepository.getById(3L),
-                    List.of(russian),
-                    documentRepository.findAll().get(4)
-            );
+        Language english = new Language(
+                "English"
+        );
+        Language dutch = new Language(
+                "Dautch"
+        );
+        Language kyrgyz = new Language(
+                "Kyrgyz"
+        );
+        Language russian = new Language(
+                "Russian"
+        );
+        languageRepository.saveAll(
+                List.of(english, dutch, kyrgyz, russian)
+        );
+        Document diploma = new Document(
+                "1234567890",
+                new Date(122, 12, 4)
+        );
+        Document passport = new Document(
+                "0987654321",
+                new Date(123, 8, 28)
+        );
+        Document passport1 = new Document(
+                "123441234",
+                new Date(123, 8, 28)
+        );
+        Document passport2 = new Document(
+                "9876573342",
+                new Date(123, 8, 28)
+        );
+        Document newDoc = new Document(
+                "новый документ",
+                new Date(123, 8, 28)
+        );
+        documentRepository.saveAll(
+                List.of(diploma, passport, passport1, passport2, newDoc)
+        );
+        Person nastya = new Person(
+                "Nastya",
+                "Chernichenko",
+                new Date(96, 8, 4),
+                departmentRepository.getById(4L),
+                List.of(english, dutch),
+                documentRepository.findAll().get(0)
+        );
+        Person serega = new Person(
+                "Serega",
+                "Filatov",
+                new Date(96, 8, 4),
+                departmentRepository.getById(2L),
+                List.of(english, dutch),
+                documentRepository.findAll().get(1)
 
-            personRepository.saveAll(
-                    List.of(kostya, nikita, serega, nastya)
-            );
+        );
+        Person nikita = new Person(
+                "Nikita",
+                "Zheksenov",
+                new Date(96, 8, 28),
+                departmentRepository.getById(1L),
+                List.of(kyrgyz),
+                documentRepository.findAll().get(2)
+        );
+        Person kostya = new Person(
+                "Kostya",
+                "Pestekhin",
+                new Date(78, 8, 28),
+                departmentRepository.getById(3L),
+                List.of(russian),
+                documentRepository.findAll().get(4)
+        );
+        personRepository.saveAll(
+                List.of(kostya, nikita, serega, nastya)
+        );
 
-//            Language english1 = languageRepository.findByName("English");
-//            log.info(english1.getPersons().toString());
+
+//        LanguageRepository languageRepository = this.languageRepository;
+//        Language english1 = languageRepository.findByName("English");
+//        System.out.println(english1);
+       /* Department byId = departmentRepository.getById(2L);
+        System.out.println(byId);*/
+
+
 //            personRepository.deleteById(1L);
 //            departmentRepository.deleteById(1L);
 //
@@ -147,12 +161,10 @@ public class Config {
 //                            documentRepository.findAll().get(5)
 //                    ));
 //            documentRepository.deleteById(documentRepository.findAll().get(4).getId());
-//            personRepository.deleteById(1L);
+//            personRepository.deleteById(2L);
 //            log.info(documentRepository.findAll().get(4).toString());
 //            log.info(updatePerson.toString());
 //            log.info(documentRepository.findAll().get(1).getId());
-
-        };
 
     }
 }

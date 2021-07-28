@@ -21,7 +21,7 @@ public class DepartmentController {
     }
 
     @GetMapping
-    public List<Department> getDepartment(){
+    public List<Department> getDepartment() {
         return departmentService.getDepartments();
     }
 }

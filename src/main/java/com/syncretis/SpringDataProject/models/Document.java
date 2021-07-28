@@ -9,19 +9,19 @@ import java.util.Date;
 @Table(name = "document")
 public class Document {
     @Id
-    @GeneratedValue(generator="system-uuid")
-    @GenericGenerator(name="system-uuid", strategy = "uuid")
+    @GeneratedValue(generator = "system-uuid")
+    @GenericGenerator(name = "system-uuid", strategy = "uuid")
     @Column(name = "id")
     private String id;
 
-    @Column(name = "number",nullable = false)
+    @Column(name = "number", nullable = false)
     private String number;
 
-    @Column(name = "expiry_date",nullable = false)
+    @Column(name = "expiry_date", nullable = false)
     @Temporal(TemporalType.DATE)
     private Date expireDate;
 
-    @OneToOne(mappedBy = "document" )
+    @OneToOne(mappedBy = "document")
     private Person person;
 
     public Document() {

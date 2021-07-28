@@ -1,6 +1,7 @@
 package com.syncretis.SpringDataProject.models;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -11,13 +12,22 @@ public class Language {
             strategy = GenerationType.IDENTITY
     )
     private Long id;
-    @Column(name = "name",nullable = false)
+    @Column(name = "name", nullable = false)
     private String name;
 
     @ManyToMany
-    private List<Person> persons;
+    private List<Person> persons = new ArrayList<>();
 
     public Language() {
+    }
+
+    public Language(String name) {
+        this.name = name;
+    }
+
+    public Language(String name, List<Person> persons) {
+        this.name = name;
+        this.persons = persons;
     }
 
     public List<Person> getPersons() {
@@ -26,10 +36,6 @@ public class Language {
 
     public void setPersons(List<Person> persons) {
         this.persons = persons;
-    }
-
-    public Language(String name) {
-        this.name = name;
     }
 
     public void setId(Long id) {
