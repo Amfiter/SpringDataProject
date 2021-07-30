@@ -36,6 +36,7 @@ public class Config {
         this.documentRepository = documentRepository;
     }
 
+    @Transactional
     public void run() {
         Department defence = new Department(
                 "Department of defence"
@@ -96,7 +97,7 @@ public class Config {
                 "Chernichenko",
                 new Date(96, 8, 4),
                 departmentRepository.getById(4L),
-                List.of(english, dutch),
+                List.of(languageRepository.getById(1L), dutch),
                 documentRepository.findAll().get(0)
         );
         Person serega = new Person(
@@ -128,12 +129,13 @@ public class Config {
                 List.of(kostya, nikita, serega, nastya)
         );
 
+        /*Language english1 = languageRepository.findByName("English");
+        english1.setPersons(List.of(nastya.getId()));
+        System.out.println(english1.getPersons());
+        languageRepository.save(english1);*/
 
-//        LanguageRepository languageRepository = this.languageRepository;
-//        Language english1 = languageRepository.findByName("English");
-//        System.out.println(english1);
-       /* Department byId = departmentRepository.getById(2L);
-        System.out.println(byId);*/
+//        List<Person> all = personRepository.findAll();
+//        System.out.println(all.get(0).getFirstName());
 
 
 //            personRepository.deleteById(1L);

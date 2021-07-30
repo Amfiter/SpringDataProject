@@ -6,9 +6,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
-@RequestMapping(path = "api/person")
+@RequestMapping(path = "api/persons")
 public class PersonController {
 
     private final PersonService personService;
@@ -18,18 +19,28 @@ public class PersonController {
         this.personService = personService;
     }
 
-    @GetMapping(value = "/get")
-    public List<Person> getPerson() {
+    @GetMapping
+    public List<Person> getPersons() {
         return personService.getPersons();
     }
 
-    @PostMapping(value = "/post")
+    @GetMapping(path = "{id}")
+    public Optional<Person> getPersonById(@PathVariable("id") Long id) {
+        return personService.getPersons(id);
+    }
+
+    @PostMapping
     public void createNewPerson(@RequestBody Person person) {
         personService.addNewPerson(person);
     }
 
-    @DeleteMapping(value = "/delete/{id}")
+    @DeleteMapping(path = "{id}")
     public void deletePerson(@PathVariable("id") Long id) {
         personService.deletePersons(id);
+    }
+
+    @PutMapping(path = "{id}")
+    public void updatePerson(@RequestBody Person person, @PathVariable("id") Long id) {
+        personService.updatePerson(person, id);
     }
 }

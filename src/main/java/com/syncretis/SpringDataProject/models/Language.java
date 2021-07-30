@@ -1,8 +1,7 @@
 package com.syncretis.SpringDataProject.models;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name = "language")
@@ -15,8 +14,8 @@ public class Language {
     @Column(name = "name", nullable = false)
     private String name;
 
-    @ManyToMany
-    private List<Person> persons = new ArrayList<>();
+    @ManyToMany(targetEntity = Person.class)
+    private Set<Person> persons;
 
     public Language() {
     }
@@ -25,16 +24,16 @@ public class Language {
         this.name = name;
     }
 
-    public Language(String name, List<Person> persons) {
+    public Language(String name, Set<Person> persons) {
         this.name = name;
         this.persons = persons;
     }
 
-    public List<Person> getPersons() {
+    public Set<Person> getPersons() {
         return persons;
     }
 
-    public void setPersons(List<Person> persons) {
+    public void setPersons(Set<Person> persons) {
         this.persons = persons;
     }
 
@@ -46,11 +45,20 @@ public class Language {
         return id;
     }
 
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
     @Override
     public String toString() {
         return "Language{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
+                ", persons=" + persons +
                 '}';
     }
 }
