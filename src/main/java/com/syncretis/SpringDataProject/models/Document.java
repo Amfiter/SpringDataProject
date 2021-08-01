@@ -62,8 +62,8 @@ public class Document {
         this.expireDate = expireDate;
     }
 
-    public Person getPerson() {
-        return person;
+    public String getPerson() {
+        return person.getSecondName();
     }
 
     public void setPerson(Person person) {

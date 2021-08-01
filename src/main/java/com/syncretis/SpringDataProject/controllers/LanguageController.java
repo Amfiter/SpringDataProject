@@ -1,6 +1,6 @@
 package com.syncretis.SpringDataProject.controllers;
 
-import com.syncretis.SpringDataProject.models.Language;
+import com.syncretis.SpringDataProject.dto.LanguageDTO;
 import com.syncretis.SpringDataProject.services.LanguageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -18,13 +18,18 @@ public class LanguageController {
     }
 
     @GetMapping
-    public List<Language> getLanguages() {
+    public List<LanguageDTO> getLanguages() {
         return languageService.getLanguages();
     }
 
+    @GetMapping(path = "{id}")
+    public LanguageDTO getLanguages(@PathVariable("id") Long id) {
+        return languageService.getLanguages(id);
+    }
+
     @PostMapping
-    public void createNewLanguage(@RequestBody Language language) {
-        languageService.addNewLanguages(language);
+    public void createNewLanguage(@RequestBody LanguageDTO languageDTO) {
+        languageService.addNewLanguages(languageDTO);
     }
 
     @DeleteMapping(path = "{id}")
@@ -33,7 +38,7 @@ public class LanguageController {
     }
 
     @PutMapping(path = "{id}")
-    public void updateLanguage(@RequestBody Language language, @PathVariable("id") Long id) {
-        languageService.updateLanguage(language, id);
+    public LanguageDTO updateLanguage(@RequestBody LanguageDTO languageDTO, @PathVariable("id") Long id) {
+        return languageService.updateLanguage(languageDTO, id);
     }
 }

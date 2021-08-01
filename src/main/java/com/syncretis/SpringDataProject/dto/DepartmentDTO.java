@@ -7,15 +7,6 @@ public class DepartmentDTO {
     public DepartmentDTO() {
     }
 
-    public DepartmentDTO(String name) {
-        this.name = name;
-    }
-
-    public DepartmentDTO(Long id, String name) {
-        this.id = id;
-        this.name = name;
-    }
-
     public Long getId() {
         return id;
     }

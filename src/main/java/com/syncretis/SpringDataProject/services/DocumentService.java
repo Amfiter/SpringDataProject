@@ -1,8 +1,12 @@
 package com.syncretis.SpringDataProject.services;
 
+import com.syncretis.SpringDataProject.converters.DocumentConverter;
+import com.syncretis.SpringDataProject.dto.DocumentDTO;
+import com.syncretis.SpringDataProject.exceptions.DocumentException;
 import com.syncretis.SpringDataProject.models.Document;
 import com.syncretis.SpringDataProject.repositories.DocumentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -10,18 +14,27 @@ import java.util.List;
 @Service
 public class DocumentService {
     private final DocumentRepository documentRepository;
+    private DocumentConverter documentConverter = new DocumentConverter();
 
     @Autowired
     public DocumentService(DocumentRepository documentRepository) {
         this.documentRepository = documentRepository;
     }
 
-    public List<Document> getDocuments() {
-        return documentRepository.findAll();
+    public List<DocumentDTO> getDocuments() {
+        List<Document> listDocument = documentRepository.findAll();
+        List<DocumentDTO> documentDTOS = documentConverter.entityToDto(listDocument);
+        return documentDTOS;
     }
 
-    public void addNewDocument(Document document) {
-        System.out.println(document);
+    public DocumentDTO getDocuments(String Id) {
+        Document document = documentRepository.findById(Id).orElseThrow(() -> new DocumentException(HttpStatus.NOT_FOUND));
+        DocumentDTO documentDTO = documentConverter.entityToDto(document);
+        return documentDTO;
+    }
+
+    public void addNewDocument(DocumentDTO documentDTO) {
+        Document document = documentConverter.dtoToEntity(documentDTO);
         documentRepository.save(document);
     }
 
@@ -33,13 +46,15 @@ public class DocumentService {
         documentRepository.deleteById(id);
     }
 
-    public Document updateDocument(Document newDocument, String id) {
-        return documentRepository.findById(id)
+    public DocumentDTO updateDocument(DocumentDTO newDocument, String id) {
+        Document documentEntity = documentConverter.dtoToEntity(newDocument);
+        DocumentDTO documentDTO = documentConverter.entityToDto(documentRepository.findById(id)
                 .map(department -> {
-                    department.setNumber(newDocument.getNumber());
-                    department.setExpireDate(newDocument.getExpireDate());
+                    department.setNumber(documentEntity.getNumber());
+                    department.setExpireDate(documentEntity.getExpireDate());
                     return documentRepository.save(department);
                 })
-                .orElseThrow(() -> new IllegalStateException("Document with id =" + id + " does not exist"));
+                .orElseThrow(() -> new DocumentException(HttpStatus.BAD_REQUEST)));
+        return documentDTO;
     }
 }

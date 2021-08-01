@@ -4,8 +4,6 @@ import com.syncretis.SpringDataProject.models.Department;
 import com.syncretis.SpringDataProject.models.Document;
 import com.syncretis.SpringDataProject.models.Language;
 
-import javax.persistence.*;
-import javax.validation.constraints.NotNull;
 import java.util.Date;
 import java.util.List;
 
@@ -14,30 +12,30 @@ public class PersonDTO {
     private String firstName;
     private String secondName;
     private Date birthday;
-    private Document document;
-    private Department department;
-    private List<Language> languageList;
+    private DocumentDTO document;
+    private DepartmentDTO department;
+    private List<LanguageDTO> languageList;
 
     public PersonDTO() {
     }
 
-    public PersonDTO(String firstName, String secondName, Date birthday, Department department, List<Language> languageList, Document document) {
+    public PersonDTO(String firstName, String secondName, Date birthday, DocumentDTO document, DepartmentDTO department, List<LanguageDTO> languageList) {
         this.firstName = firstName;
         this.secondName = secondName;
         this.birthday = birthday;
+        this.document = document;
         this.department = department;
         this.languageList = languageList;
-        this.document = document;
     }
 
-    public PersonDTO(Long id, String firstName, String secondName, Date birthday, Department department, List<Language> languageList, Document document) {
+    public PersonDTO(Long id, String firstName, String secondName, Date birthday, DocumentDTO document, DepartmentDTO department, List<LanguageDTO> languageList) {
         this.id = id;
         this.firstName = firstName;
         this.secondName = secondName;
         this.birthday = birthday;
+        this.document = document;
         this.department = department;
         this.languageList = languageList;
-        this.document = document;
     }
 
     public Long getId() {
@@ -72,27 +70,27 @@ public class PersonDTO {
         this.birthday = birthday;
     }
 
-    public Document getDocument() {
+    public DocumentDTO getDocument() {
         return document;
     }
 
-    public void setDocument(Document document) {
+    public void setDocument(DocumentDTO document) {
         this.document = document;
     }
 
-    public Department getDepartment() {
+    public DepartmentDTO getDepartment() {
         return department;
     }
 
-    public void setDepartment(Department department) {
+    public void setDepartment(DepartmentDTO department) {
         this.department = department;
     }
 
-    public List<Language> getLanguageList() {
+    public List<LanguageDTO> getLanguageList() {
         return languageList;
     }
 
-    public void setLanguageList(List<Language> languageList) {
+    public void setLanguageList(List<LanguageDTO> languageList) {
         this.languageList = languageList;
     }
 }

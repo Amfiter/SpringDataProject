@@ -1,6 +1,6 @@
 package com.syncretis.SpringDataProject.controllers;
 
-import com.syncretis.SpringDataProject.models.Document;
+import com.syncretis.SpringDataProject.dto.DocumentDTO;
 import com.syncretis.SpringDataProject.services.DocumentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -18,13 +18,18 @@ public class DocumentController {
     }
 
     @GetMapping
-    public List<Document> geDocuments() {
+    public List<DocumentDTO> getDocuments() {
         return documentService.getDocuments();
     }
 
+    @GetMapping(path = "{id}")
+    public DocumentDTO getDocumentById(@PathVariable("id") String id) {
+        return documentService.getDocuments(id);
+    }
+
     @PostMapping
-    public void createNewDocument(@RequestBody Document document) {
-        documentService.addNewDocument(document);
+    public void createNewDocument(@RequestBody DocumentDTO documentDTO) {
+        documentService.addNewDocument(documentDTO);
     }
 
     @DeleteMapping(path = "{id}")
@@ -33,7 +38,7 @@ public class DocumentController {
     }
 
     @PutMapping(path = "{id}")
-    public void updateDocument(@RequestBody Document document, @PathVariable("id") String id) {
-        documentService.updateDocument(document, id);
+    public DocumentDTO updateDocument(@RequestBody DocumentDTO documentDTO, @PathVariable("id") String id) {
+        return documentService.updateDocument(documentDTO, id);
     }
 }

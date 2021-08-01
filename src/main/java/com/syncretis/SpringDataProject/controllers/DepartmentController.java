@@ -1,12 +1,11 @@
 package com.syncretis.SpringDataProject.controllers;
 
-import com.syncretis.SpringDataProject.models.Department;
+import com.syncretis.SpringDataProject.dto.DepartmentDTO;
 import com.syncretis.SpringDataProject.services.DepartmentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping(path = "api/departments")
@@ -20,18 +19,18 @@ public class DepartmentController {
     }
 
     @GetMapping
-    public List<Department> getDepartment() {
+    public List<DepartmentDTO> getDepartment() {
         return departmentService.getDepartments();
     }
 
     @GetMapping(path = "{id}")
-    public Optional<Department> getDepartmentById(@PathVariable("id") Long id) {
+    public DepartmentDTO getDepartmentById(@PathVariable("id") Long id) {
         return departmentService.getDepartments(id);
     }
 
     @PostMapping
-    public void createNewDepartment(@RequestBody Department department) {
-        departmentService.addNewDepartment(department);
+    public void createNewDepartment(@RequestBody DepartmentDTO departmentDTO) {
+        departmentService.addNewDepartment(departmentDTO);
     }
 
     @DeleteMapping(path = "{id}")
@@ -40,8 +39,8 @@ public class DepartmentController {
     }
 
     @PutMapping(path = "{id}")
-    public void updateDepartment(@RequestBody Department department, @PathVariable("id") Long id) {
-        departmentService.updateDepartment(department, id);
+    public DepartmentDTO updateDepartment(@RequestBody DepartmentDTO departmentDTO, @PathVariable("id") Long id) {
+        return departmentService.updateDepartment(departmentDTO, id);
     }
 
 
