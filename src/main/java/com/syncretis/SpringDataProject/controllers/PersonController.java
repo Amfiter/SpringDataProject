@@ -13,12 +13,8 @@ import java.util.Optional;
 @RequestMapping(path = "api/persons")
 public class PersonController {
 
-    private final PersonService personService;
-
     @Autowired
-    public PersonController(PersonService personService) {
-        this.personService = personService;
-    }
+    private PersonService personService;
 
     @GetMapping
     public List<PersonDTO> getPersons() {
@@ -41,7 +37,7 @@ public class PersonController {
     }
 
     @PutMapping(path = "{id}")
-    public PersonDTO updatePerson(@RequestBody PersonDTO personDTO, @PathVariable("id") Long id) {
+    public Person updatePerson(@RequestBody PersonDTO personDTO, @PathVariable("id") Long id) {
         return personService.updatePerson(personDTO, id);
     }
 }

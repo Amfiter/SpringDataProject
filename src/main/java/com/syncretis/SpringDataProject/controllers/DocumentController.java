@@ -1,6 +1,7 @@
 package com.syncretis.SpringDataProject.controllers;
 
 import com.syncretis.SpringDataProject.dto.DocumentDTO;
+import com.syncretis.SpringDataProject.models.Document;
 import com.syncretis.SpringDataProject.services.DocumentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -10,12 +11,9 @@ import java.util.List;
 @RestController
 @RequestMapping(path = "api/documents")
 public class DocumentController {
-    private final DocumentService documentService;
 
     @Autowired
-    public DocumentController(DocumentService documentService) {
-        this.documentService = documentService;
-    }
+    private  DocumentService documentService;
 
     @GetMapping
     public List<DocumentDTO> getDocuments() {
@@ -38,7 +36,7 @@ public class DocumentController {
     }
 
     @PutMapping(path = "{id}")
-    public DocumentDTO updateDocument(@RequestBody DocumentDTO documentDTO, @PathVariable("id") String id) {
+    public Document updateDocument(@RequestBody DocumentDTO documentDTO, @PathVariable("id") String id) {
         return documentService.updateDocument(documentDTO, id);
     }
 }

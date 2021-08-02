@@ -13,15 +13,11 @@ import java.util.List;
 
 @Service
 public class DepartmentService {
-
-    private final DepartmentRepository departmentRepository;
-    private DepartmentConverter departmentConverter = new DepartmentConverter();
-
+    @Autowired
+    private DepartmentRepository    departmentRepository;
 
     @Autowired
-    public DepartmentService(DepartmentRepository departmentRepository) {
-        this.departmentRepository = departmentRepository;
-    }
+    private DepartmentConverter departmentConverter;
 
     public List<DepartmentDTO> getDepartments() {
         List<Department> listDepartment = departmentRepository.findAll();
@@ -48,15 +44,14 @@ public class DepartmentService {
         departmentRepository.deleteById(id);
     }
 
-    public DepartmentDTO updateDepartment(DepartmentDTO newDepartment, Long id) {
+    public Department updateDepartment(DepartmentDTO newDepartment, Long id) {
         Department departmentEntity = departmentConverter.dtoToEntity(newDepartment);
-        DepartmentDTO departmentDTO = departmentConverter.entityToDto(departmentRepository.findById(id)
+        return departmentRepository.findById(id)
                 .map(department -> {
                     department.setName(departmentEntity.getName());
                     return departmentRepository.save(department);
                 })
-                .orElseThrow(() -> new DepartmentException(HttpStatus.BAD_REQUEST)));
-        return departmentDTO;
+                .orElseThrow(() -> new DepartmentException(HttpStatus.BAD_REQUEST));
     }
 
 

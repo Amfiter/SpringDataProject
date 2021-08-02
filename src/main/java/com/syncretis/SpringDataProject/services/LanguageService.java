@@ -13,13 +13,11 @@ import java.util.List;
 
 @Service
 public class LanguageService {
-    private final LanguageRepository languageRepository;
-    private LanguageConverter languageConverter = new LanguageConverter();
+    @Autowired
+    private LanguageRepository languageRepository;
 
     @Autowired
-    public LanguageService(LanguageRepository languageRepository) {
-        this.languageRepository = languageRepository;
-    }
+    private LanguageConverter languageConverter;
 
     public List<LanguageDTO> getLanguages() {
         List<Language> listLanguage = languageRepository.findAll();
@@ -46,15 +44,14 @@ public class LanguageService {
         languageRepository.deleteById(id);
     }
 
-    public LanguageDTO updateLanguage(LanguageDTO newLanguage, Long id) {
+    public Language updateLanguage(LanguageDTO newLanguage, Long id) {
         Language languageEntity = languageConverter.dtoToEntity(newLanguage);
-        LanguageDTO languageDTO = languageConverter.entityToDto(languageRepository.findById(id)
+        return languageRepository.findById(id)
                 .map(language -> {
                     language.setName(languageEntity.getName());
                     return languageRepository.save(language);
                 })
-                .orElseThrow(() -> new LanguageException(HttpStatus.BAD_REQUEST)));
-        return languageDTO;
+                .orElseThrow(() -> new LanguageException(HttpStatus.BAD_REQUEST));
     }
 
 }

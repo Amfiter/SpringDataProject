@@ -2,10 +2,12 @@ package com.syncretis.SpringDataProject.converters;
 
 import com.syncretis.SpringDataProject.dto.LanguageDTO;
 import com.syncretis.SpringDataProject.models.Language;
+import org.springframework.stereotype.Component;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Component
 public class LanguageConverter {
 
     public LanguageDTO entityToDto(Language language) {

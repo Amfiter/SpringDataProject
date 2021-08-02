@@ -1,16 +1,35 @@
 package com.syncretis.SpringDataProject.converters;
 
 import com.syncretis.SpringDataProject.dto.PersonDTO;
+import com.syncretis.SpringDataProject.models.Department;
+import com.syncretis.SpringDataProject.models.Document;
 import com.syncretis.SpringDataProject.models.Person;
+import com.syncretis.SpringDataProject.repositories.DepartmentRepository;
+import com.syncretis.SpringDataProject.repositories.DocumentRepository;
+import com.syncretis.SpringDataProject.repositories.LanguageRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
+@Component
 public class PersonConverter {
 
-    private DepartmentConverter departmentConverter = new DepartmentConverter();
-    private DocumentConverter documentConverter = new DocumentConverter();
-    private LanguageConverter languageConverter = new LanguageConverter();
+    @Autowired
+    private DepartmentConverter departmentConverter;
+    @Autowired
+    private DepartmentRepository departmentRepository;
+    @Autowired
+    private DocumentRepository documentRepository;
+    @Autowired
+    private LanguageRepository languageRepository;
+
+    @Autowired
+    private DocumentConverter documentConverter;
+    @Autowired
+    private LanguageConverter languageConverter;
 
     public PersonDTO entityToDto(Person person) {
         PersonDTO personDTO = new PersonDTO();
@@ -30,13 +49,42 @@ public class PersonConverter {
 
     public Person dtoToEntity(PersonDTO personDTO) {
         Person person = new Person();
+        Department newDep;
+        if(personDTO.getDepartment().getId() != null) {
+            Optional<Department> optional = departmentRepository.findById(personDTO.getDepartment().getId());
+            if(optional.isPresent()) {
+                newDep = optional.get();
+            } else {
+                newDep = new Department();
+            }
+        } else {
+            newDep = new Department();
+        }
+        newDep.setId(personDTO.getDepartment().getId());
+        newDep.setName(personDTO.getDepartment().getName());
+
+        Document newDoc;
+        if(personDTO.getDocument().getId() != null) {
+            Optional<Document> optional = documentRepository.findById(personDTO.getDocument().getId());
+            if(optional.isPresent()) {
+                newDoc = optional.get();
+            } else {
+                newDoc = new Document();
+            }
+        } else {
+            newDoc = new Document();
+        }
+        newDoc.setId(personDTO.getDocument().getId());
+        newDoc.setNumber(personDTO.getDocument().getNumber());
+
+
         person.setId(personDTO.getId());
         person.setFirstName(personDTO.getFirstName());
         person.setSecondName(personDTO.getSecondName());
         person.setBirthday(personDTO.getBirthday());
-        person.setDepartment(departmentConverter.dtoToEntity(personDTO.getDepartment()));
-        person.setDocument(documentConverter.dtoToEntity(personDTO.getDocument()));
-        person.setLanguageList(languageConverter.dtoToEntity(personDTO.getLanguageList()));
+        person.setDepartment(newDep);
+        person.setDocument(newDoc);
+        person.setLanguageList(null);
         return person;
     }
 

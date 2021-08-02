@@ -19,25 +19,6 @@ public class PersonDTO {
     public PersonDTO() {
     }
 
-    public PersonDTO(String firstName, String secondName, Date birthday, DocumentDTO document, DepartmentDTO department, List<LanguageDTO> languageList) {
-        this.firstName = firstName;
-        this.secondName = secondName;
-        this.birthday = birthday;
-        this.document = document;
-        this.department = department;
-        this.languageList = languageList;
-    }
-
-    public PersonDTO(Long id, String firstName, String secondName, Date birthday, DocumentDTO document, DepartmentDTO department, List<LanguageDTO> languageList) {
-        this.id = id;
-        this.firstName = firstName;
-        this.secondName = secondName;
-        this.birthday = birthday;
-        this.document = document;
-        this.department = department;
-        this.languageList = languageList;
-    }
-
     public Long getId() {
         return id;
     }

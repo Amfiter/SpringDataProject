@@ -1,6 +1,10 @@
 package com.syncretis.SpringDataProject.configs;
 
 import com.syncretis.SpringDataProject.SpringDataProjectApplication;
+import com.syncretis.SpringDataProject.models.Department;
+import com.syncretis.SpringDataProject.models.Document;
+import com.syncretis.SpringDataProject.models.Language;
+import com.syncretis.SpringDataProject.models.Person;
 import com.syncretis.SpringDataProject.repositories.DepartmentRepository;
 import com.syncretis.SpringDataProject.repositories.DocumentRepository;
 import com.syncretis.SpringDataProject.repositories.LanguageRepository;
@@ -8,6 +12,8 @@ import com.syncretis.SpringDataProject.repositories.PersonRepository;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.sql.Date;
+import java.util.List;
 import java.util.logging.Logger;
 
 @Service

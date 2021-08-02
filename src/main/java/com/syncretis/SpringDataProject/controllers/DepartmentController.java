@@ -1,6 +1,7 @@
 package com.syncretis.SpringDataProject.controllers;
 
 import com.syncretis.SpringDataProject.dto.DepartmentDTO;
+import com.syncretis.SpringDataProject.models.Department;
 import com.syncretis.SpringDataProject.services.DepartmentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -11,12 +12,8 @@ import java.util.List;
 @RequestMapping(path = "api/departments")
 public class DepartmentController {
 
-    private final DepartmentService departmentService;
-
     @Autowired
-    public DepartmentController(DepartmentService departmentService) {
-        this.departmentService = departmentService;
-    }
+    private DepartmentService departmentService;
 
     @GetMapping
     public List<DepartmentDTO> getDepartment() {
@@ -39,7 +36,7 @@ public class DepartmentController {
     }
 
     @PutMapping(path = "{id}")
-    public DepartmentDTO updateDepartment(@RequestBody DepartmentDTO departmentDTO, @PathVariable("id") Long id) {
+    public Department updateDepartment(@RequestBody DepartmentDTO departmentDTO, @PathVariable("id") Long id) {
         return departmentService.updateDepartment(departmentDTO, id);
     }
 

@@ -13,13 +13,11 @@ import java.util.List;
 
 @Service
 public class DocumentService {
-    private final DocumentRepository documentRepository;
-    private DocumentConverter documentConverter = new DocumentConverter();
+    @Autowired
+    private DocumentRepository documentRepository;
 
     @Autowired
-    public DocumentService(DocumentRepository documentRepository) {
-        this.documentRepository = documentRepository;
-    }
+    private DocumentConverter documentConverter;
 
     public List<DocumentDTO> getDocuments() {
         List<Document> listDocument = documentRepository.findAll();
@@ -46,15 +44,14 @@ public class DocumentService {
         documentRepository.deleteById(id);
     }
 
-    public DocumentDTO updateDocument(DocumentDTO newDocument, String id) {
+    public Document updateDocument(DocumentDTO newDocument, String id) {
         Document documentEntity = documentConverter.dtoToEntity(newDocument);
-        DocumentDTO documentDTO = documentConverter.entityToDto(documentRepository.findById(id)
+        return documentRepository.findById(id)
                 .map(department -> {
                     department.setNumber(documentEntity.getNumber());
                     department.setExpireDate(documentEntity.getExpireDate());
                     return documentRepository.save(department);
                 })
-                .orElseThrow(() -> new DocumentException(HttpStatus.BAD_REQUEST)));
-        return documentDTO;
+                .orElseThrow(() -> new DocumentException(HttpStatus.BAD_REQUEST));
     }
 }
