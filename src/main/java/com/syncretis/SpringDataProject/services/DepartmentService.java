@@ -2,6 +2,7 @@ package com.syncretis.SpringDataProject.services;
 
 import com.syncretis.SpringDataProject.converters.DepartmentConverter;
 import com.syncretis.SpringDataProject.dto.DepartmentDTO;
+import com.syncretis.SpringDataProject.dto.PersonDTO;
 import com.syncretis.SpringDataProject.exceptions.DepartmentException;
 import com.syncretis.SpringDataProject.models.Department;
 import com.syncretis.SpringDataProject.repositories.DepartmentRepository;
@@ -10,6 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class DepartmentService {
@@ -52,6 +54,22 @@ public class DepartmentService {
                     return departmentRepository.save(department);
                 })
                 .orElseThrow(() -> new DepartmentException(HttpStatus.BAD_REQUEST));
+    }
+
+    public Department checkAndReturnDepartment(PersonDTO personDTO){
+        Department department;
+        if(personDTO.getDepartment().getId() != null) {
+            Optional<Department> optional = departmentRepository.findById(personDTO.getDepartment().getId());
+            System.out.println("нашел optional departmentById" + optional);
+            if(optional.isPresent()) {
+                department = optional.get();
+            } else {
+                department = new Department();
+            }
+        } else {
+            throw new DepartmentException(HttpStatus.FORBIDDEN);
+        }
+        return department;
     }
 
 

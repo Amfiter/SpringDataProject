@@ -13,7 +13,6 @@ import java.util.stream.Collectors;
 public class DepartmentConverter {
 
     public DepartmentDTO entityToDto(Department department) {
-
         DepartmentDTO departmentDTO = new DepartmentDTO();
         departmentDTO.setId(department.getId());
         departmentDTO.setName(department.getName());

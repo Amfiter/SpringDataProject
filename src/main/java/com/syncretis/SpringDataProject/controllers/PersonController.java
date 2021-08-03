@@ -38,6 +38,6 @@ public class PersonController {
 
     @PutMapping(path = "{id}")
     public Person updatePerson(@RequestBody PersonDTO personDTO, @PathVariable("id") Long id) {
-        return personService.updatePerson(personDTO, id);
+       return personService.updatePerson(personDTO, id);
     }
 }

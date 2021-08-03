@@ -44,11 +44,8 @@ public class PersonService {
         }
     }
 
-
-
     public Person updatePerson(PersonDTO newPerson, Long id) {
         Person personEntity = personConverter.dtoToEntity(newPerson);
-
         return personRepository.findById(id)
                 .map(person -> {
                     person.setFirstName(personEntity.getFirstName());

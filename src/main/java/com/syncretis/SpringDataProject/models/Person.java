@@ -6,7 +6,7 @@ import java.util.Date;
 import java.util.List;
 
 @Entity
-@Table(name = "person")
+@Table(name = "person",uniqueConstraints = @UniqueConstraint( name = "uk_document_id",  columnNames = {"document_id"} ))
 public class Person {
 
     @Id
@@ -33,7 +33,7 @@ public class Person {
     @JoinColumn(name = "department_id", nullable = false)
     private Department department;
 
-    @ManyToMany(cascade = CascadeType.ALL)
+    @ManyToMany
     @JoinTable(name = "persons_languages",
             joinColumns = @JoinColumn(name = "person_id"),
             inverseJoinColumns = @JoinColumn(name = "language_id")
