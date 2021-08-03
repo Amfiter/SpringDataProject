@@ -2,6 +2,7 @@ package com.syncretis.SpringDataProject.services;
 
 import com.syncretis.SpringDataProject.converters.LanguageConverter;
 import com.syncretis.SpringDataProject.dto.LanguageDTO;
+import com.syncretis.SpringDataProject.dto.PersonDTO;
 import com.syncretis.SpringDataProject.exceptions.LanguageException;
 import com.syncretis.SpringDataProject.models.Language;
 import com.syncretis.SpringDataProject.repositories.LanguageRepository;
@@ -9,7 +10,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class LanguageService {
@@ -52,6 +55,28 @@ public class LanguageService {
                     return languageRepository.save(language);
                 })
                 .orElseThrow(() -> new LanguageException(HttpStatus.BAD_REQUEST));
+    }
+
+    public List<Language> checkAndReturnLanguage(PersonDTO personDTO){
+        Language language;
+        List<Language> listLanguage = new ArrayList<>();
+        for (int i = 0; i < personDTO.getLanguageList().size(); i++) {
+            if(personDTO.getLanguageList().get(i).getId() != null) {
+                Optional<Language> optional = languageRepository.findById(personDTO.getLanguageList().get(i).getId());
+                System.out.println("нашел optional languageById" + optional);
+                if(optional.isPresent()) {
+                    language = optional.get();
+                } else {
+                    language = new Language();
+                }
+            } else {
+                throw new LanguageException(HttpStatus.BAD_REQUEST);
+            }
+            /*newLanguage.setId(personDTO.getLanguageList().get(i).getId());
+            newLanguage.setName(personDTO.getLanguageList().get(i).getName());*/
+            listLanguage.add(language);
+        }
+        return listLanguage;
     }
 
 }

@@ -1,15 +1,24 @@
 package com.syncretis.SpringDataProject.converters;
 
 import com.syncretis.SpringDataProject.dto.PersonDTO;
+import com.syncretis.SpringDataProject.exceptions.DepartmentException;
+import com.syncretis.SpringDataProject.exceptions.LanguageException;
+import com.syncretis.SpringDataProject.exceptions.PersonException;
 import com.syncretis.SpringDataProject.models.Department;
 import com.syncretis.SpringDataProject.models.Document;
+import com.syncretis.SpringDataProject.models.Language;
 import com.syncretis.SpringDataProject.models.Person;
 import com.syncretis.SpringDataProject.repositories.DepartmentRepository;
 import com.syncretis.SpringDataProject.repositories.DocumentRepository;
 import com.syncretis.SpringDataProject.repositories.LanguageRepository;
+import com.syncretis.SpringDataProject.services.DepartmentService;
+import com.syncretis.SpringDataProject.services.DocumentService;
+import com.syncretis.SpringDataProject.services.LanguageService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -20,12 +29,11 @@ public class PersonConverter {
     @Autowired
     private DepartmentConverter departmentConverter;
     @Autowired
-    private DepartmentRepository departmentRepository;
+    private DepartmentService departmentService;
     @Autowired
-    private DocumentRepository documentRepository;
+    private DocumentService documentService;
     @Autowired
-    private LanguageRepository languageRepository;
-
+    private LanguageService languageService;
     @Autowired
     private DocumentConverter documentConverter;
     @Autowired
@@ -49,42 +57,13 @@ public class PersonConverter {
 
     public Person dtoToEntity(PersonDTO personDTO) {
         Person person = new Person();
-        Department newDep;
-        if(personDTO.getDepartment().getId() != null) {
-            Optional<Department> optional = departmentRepository.findById(personDTO.getDepartment().getId());
-            if(optional.isPresent()) {
-                newDep = optional.get();
-            } else {
-                newDep = new Department();
-            }
-        } else {
-            newDep = new Department();
-        }
-        newDep.setId(personDTO.getDepartment().getId());
-        newDep.setName(personDTO.getDepartment().getName());
-
-        Document newDoc;
-        if(personDTO.getDocument().getId() != null) {
-            Optional<Document> optional = documentRepository.findById(personDTO.getDocument().getId());
-            if(optional.isPresent()) {
-                newDoc = optional.get();
-            } else {
-                newDoc = new Document();
-            }
-        } else {
-            newDoc = new Document();
-        }
-        newDoc.setId(personDTO.getDocument().getId());
-        newDoc.setNumber(personDTO.getDocument().getNumber());
-
-
         person.setId(personDTO.getId());
         person.setFirstName(personDTO.getFirstName());
         person.setSecondName(personDTO.getSecondName());
         person.setBirthday(personDTO.getBirthday());
-        person.setDepartment(newDep);
-        person.setDocument(newDoc);
-        person.setLanguageList(null);
+        person.setDepartment(departmentService.checkAndReturnDepartment(personDTO));
+        person.setDocument(documentService.checkAndReturnDocument(personDTO));
+        person.setLanguageList(languageService.checkAndReturnLanguage(personDTO));
         return person;
     }
 
