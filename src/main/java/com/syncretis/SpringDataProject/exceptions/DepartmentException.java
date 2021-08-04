@@ -4,8 +4,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.server.ResponseStatusException;
 
 public class DepartmentException extends RuntimeException {
-    public DepartmentException(HttpStatus status) {
-        throw new ResponseStatusException(
-                status, "Department " + status.getReasonPhrase());
+    public DepartmentException(HttpStatus status) { super("Department " + status.getReasonPhrase());;
     }
 }

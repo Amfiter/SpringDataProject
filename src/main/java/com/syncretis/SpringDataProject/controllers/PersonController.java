@@ -1,13 +1,15 @@
 package com.syncretis.SpringDataProject.controllers;
 
+import com.syncretis.SpringDataProject.Marker;
 import com.syncretis.SpringDataProject.dto.PersonDTO;
 import com.syncretis.SpringDataProject.models.Person;
 import com.syncretis.SpringDataProject.services.PersonService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping(path = "api/persons")
@@ -27,7 +29,8 @@ public class PersonController {
     }
 
     @PostMapping
-    public void createNewPerson(@RequestBody PersonDTO personDTO) {
+    @Validated({Marker.OnCreate.class})
+    public void createNewPerson(@Valid @RequestBody PersonDTO personDTO) {
         personService.addNewPerson(personDTO);
     }
 
@@ -36,8 +39,9 @@ public class PersonController {
         personService.deletePersons(id);
     }
 
+    @Validated({Marker.OnUpdate.class})
     @PutMapping(path = "{id}")
     public Person updatePerson(@RequestBody PersonDTO personDTO, @PathVariable("id") Long id) {
-       return personService.updatePerson(personDTO, id);
+        return personService.updatePerson(personDTO, id);
     }
 }

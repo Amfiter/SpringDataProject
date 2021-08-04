@@ -4,7 +4,6 @@ import com.syncretis.SpringDataProject.converters.DocumentConverter;
 import com.syncretis.SpringDataProject.dto.DocumentDTO;
 import com.syncretis.SpringDataProject.dto.PersonDTO;
 import com.syncretis.SpringDataProject.exceptions.DocumentException;
-import com.syncretis.SpringDataProject.exceptions.PersonException;
 import com.syncretis.SpringDataProject.models.Document;
 import com.syncretis.SpringDataProject.repositories.DocumentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,9 +39,8 @@ public class DocumentService {
     }
 
     public void deleteDocument(String id) {
-        boolean exists = documentRepository.existsById(id);
-        if (!exists) {
-            throw new IllegalStateException("Department with id = " + id + " does not exists");
+        if (!documentRepository.existsById(id)) {
+            throw new DocumentException(HttpStatus.NOT_FOUND);
         }
         documentRepository.deleteById(id);
     }
@@ -58,11 +56,11 @@ public class DocumentService {
                 .orElseThrow(() -> new DocumentException(HttpStatus.BAD_REQUEST));
     }
 
-    public Document checkAndReturnDocument(PersonDTO personDTO){
+    public Document checkAndReturnDocument(PersonDTO personDTO) {
         Document document;
-        if(personDTO.getDocument().getId() == null) {
+        if (personDTO.getDocument().getId() == null) {
             Optional<Document> optional = documentRepository.findByNumber(personDTO.getDocument().getNumber());
-            if(optional.isPresent()) {
+            if (optional.isPresent()) {
                 throw new DocumentException(HttpStatus.CONFLICT);
             } else {
                 document = new Document();
@@ -72,7 +70,7 @@ public class DocumentService {
             }
         } else {
             Optional<Document> optional = documentRepository.findById(personDTO.getDocument().getId());
-            if(optional.isPresent()) {
+            if (optional.isPresent()) {
                 document = optional.get();
             } else {
                 throw new DocumentException(HttpStatus.BAD_REQUEST);

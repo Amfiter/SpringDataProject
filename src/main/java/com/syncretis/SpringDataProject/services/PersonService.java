@@ -36,12 +36,10 @@ public class PersonService {
     }
 
     public void deletePersons(Long id) {
-        boolean personExists = personRepository.existsById(id);
-        if (!personExists) {
-            throw new IllegalStateException("person with id = " + id + " does't exist ");
-        } else {
-            personRepository.deleteById(id);
+        if (!personRepository.existsById(id)) {
+            throw new PersonException(HttpStatus.NOT_FOUND);
         }
+        personRepository.deleteById(id);
     }
 
     public Person updatePerson(PersonDTO newPerson, Long id) {

@@ -16,7 +16,7 @@ import java.util.Optional;
 @Service
 public class DepartmentService {
     @Autowired
-    private DepartmentRepository    departmentRepository;
+    private DepartmentRepository departmentRepository;
 
     @Autowired
     private DepartmentConverter departmentConverter;
@@ -39,9 +39,8 @@ public class DepartmentService {
     }
 
     public void deleteDepartment(Long id) {
-        boolean exists = departmentRepository.existsById(id);
-        if (!exists) {
-            throw new IllegalStateException("Department with id = " + id + " does not exists");
+        if (!departmentRepository.existsById(id)) {
+            throw new DepartmentException(HttpStatus.NOT_FOUND);
         }
         departmentRepository.deleteById(id);
     }
@@ -56,12 +55,12 @@ public class DepartmentService {
                 .orElseThrow(() -> new DepartmentException(HttpStatus.BAD_REQUEST));
     }
 
-    public Department checkAndReturnDepartment(PersonDTO personDTO){
+    public Department checkAndReturnDepartment(PersonDTO personDTO) {
         Department department;
-        if(personDTO.getDepartment().getId() != null) {
+        if (personDTO.getDepartment().getId() != null) {
             Optional<Department> optional = departmentRepository.findById(personDTO.getDepartment().getId());
             System.out.println("нашел optional departmentById" + optional);
-            if(optional.isPresent()) {
+            if (optional.isPresent()) {
                 department = optional.get();
             } else {
                 department = new Department();

@@ -1,19 +1,23 @@
 package com.syncretis.SpringDataProject.controllers;
 
+import com.syncretis.SpringDataProject.Marker;
 import com.syncretis.SpringDataProject.dto.DocumentDTO;
 import com.syncretis.SpringDataProject.models.Document;
 import com.syncretis.SpringDataProject.services.DocumentService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
+@Validated
 @RestController
 @RequestMapping(path = "api/documents")
 public class DocumentController {
 
     @Autowired
-    private  DocumentService documentService;
+    private DocumentService documentService;
 
     @GetMapping
     public List<DocumentDTO> getDocuments() {
@@ -21,12 +25,13 @@ public class DocumentController {
     }
 
     @GetMapping(path = "{id}")
-    public DocumentDTO getDocumentById(@PathVariable("id") String id) {
+    public DocumentDTO getDocumentById(@Valid @PathVariable("id") String id) {
         return documentService.getDocuments(id);
     }
 
     @PostMapping
-    public void createNewDocument(@RequestBody DocumentDTO documentDTO) {
+    @Validated({Marker.OnCreate.class})
+    public void createNewDocument(@Valid @RequestBody DocumentDTO documentDTO) {
         documentService.addNewDocument(documentDTO);
     }
 
@@ -35,8 +40,9 @@ public class DocumentController {
         documentService.deleteDocument(id);
     }
 
+    @Validated({Marker.OnUpdate.class})
     @PutMapping(path = "{id}")
-    public Document updateDocument(@RequestBody DocumentDTO documentDTO, @PathVariable("id") String id) {
+    public Document updateDocument(@Valid @RequestBody DocumentDTO documentDTO, @PathVariable("id") String id) {
         return documentService.updateDocument(documentDTO, id);
     }
 }

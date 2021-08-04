@@ -1,12 +1,19 @@
 package com.syncretis.SpringDataProject.dto;
 
+import com.syncretis.SpringDataProject.Marker;
 import com.syncretis.SpringDataProject.models.Person;
 
+import javax.validation.constraints.*;
 import java.util.Date;
 
 public class DocumentDTO {
+    @Null(groups = Marker.OnCreate.class, message = "should be null")
+    @NotNull(groups = Marker.OnUpdate.class, message = "should be not null")
     private String id;
+    @NotBlank(message = "should be not blank")
+    @DecimalMin(value = "1", message = "should only contain numbers")
     private String number;
+    @Future(message = "should not be in the past")
     private Date expireDate;
 
     public DocumentDTO() {

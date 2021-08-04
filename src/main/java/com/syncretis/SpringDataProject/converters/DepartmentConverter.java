@@ -2,11 +2,9 @@ package com.syncretis.SpringDataProject.converters;
 
 import com.syncretis.SpringDataProject.dto.DepartmentDTO;
 import com.syncretis.SpringDataProject.models.Department;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Component
