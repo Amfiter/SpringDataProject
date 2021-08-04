@@ -3,17 +3,22 @@ package com.syncretis.SpringDataProject.controllers;
 import com.syncretis.SpringDataProject.dto.LanguageDTO;
 import com.syncretis.SpringDataProject.models.Language;
 import com.syncretis.SpringDataProject.services.LanguageService;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.syncretis.SpringDataProject.util.Marker;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
+@Validated
 @RequestMapping(path = "api/languages")
 public class LanguageController {
+    private final LanguageService languageService;
 
-    @Autowired
-    private LanguageService languageService;
+    public LanguageController(LanguageService languageService) {
+        this.languageService = languageService;
+    }
 
     @GetMapping
     public List<LanguageDTO> getLanguages() {
@@ -25,8 +30,9 @@ public class LanguageController {
         return languageService.getLanguages(id);
     }
 
+    @Validated({Marker.OnCreate.class})
     @PostMapping
-    public void createNewLanguage(@RequestBody LanguageDTO languageDTO) {
+    public void createNewLanguage(@Valid @RequestBody LanguageDTO languageDTO) {
         languageService.addNewLanguages(languageDTO);
     }
 
@@ -35,8 +41,9 @@ public class LanguageController {
         languageService.deleteLanguage(id);
     }
 
+    @Validated({Marker.OnUpdate.class})
     @PutMapping(path = "{id}")
-    public Language updateLanguage(@RequestBody LanguageDTO languageDTO, @PathVariable("id") Long id) {
+    public Language updateLanguage(@Valid @RequestBody LanguageDTO languageDTO, @PathVariable("id") Long id) {
         return languageService.updateLanguage(languageDTO, id);
     }
 }

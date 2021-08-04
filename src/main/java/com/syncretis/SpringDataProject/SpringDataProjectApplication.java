@@ -14,6 +14,5 @@ public class SpringDataProjectApplication {
         ConfigurableApplicationContext run = SpringApplication.run(SpringDataProjectApplication.class, args);
         Config config = run.getBean("config", Config.class);
         config.run();
-
     }
 }

@@ -3,7 +3,8 @@ package com.syncretis.SpringDataProject.controllers;
 import com.syncretis.SpringDataProject.dto.DepartmentDTO;
 import com.syncretis.SpringDataProject.models.Department;
 import com.syncretis.SpringDataProject.services.DepartmentService;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.syncretis.SpringDataProject.util.Marker;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -11,9 +12,11 @@ import java.util.List;
 @RestController
 @RequestMapping(path = "api/departments")
 public class DepartmentController {
+    private final DepartmentService departmentService;
 
-    @Autowired
-    private DepartmentService departmentService;
+    public DepartmentController(DepartmentService departmentService) {
+        this.departmentService = departmentService;
+    }
 
     @GetMapping
     public List<DepartmentDTO> getDepartment() {
@@ -26,6 +29,7 @@ public class DepartmentController {
     }
 
     @PostMapping
+    @Validated({Marker.OnCreate.class})
     public void createNewDepartment(@RequestBody DepartmentDTO departmentDTO) {
         departmentService.addNewDepartment(departmentDTO);
     }
