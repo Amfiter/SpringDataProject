@@ -9,5 +9,6 @@ import java.util.Optional;
 @Repository
 public interface DocumentRepository extends JpaRepository<Document, String> {
     Document getById(String id);
+
     Optional<Document> findByNumber(String number);
 }

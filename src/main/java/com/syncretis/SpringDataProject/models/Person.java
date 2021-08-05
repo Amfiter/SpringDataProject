@@ -6,7 +6,7 @@ import java.util.Date;
 import java.util.List;
 
 @Entity
-@Table(name = "person",uniqueConstraints = @UniqueConstraint( name = "uk_document_id",  columnNames = {"document_id"} ))
+@Table(name = "person", uniqueConstraints = @UniqueConstraint(name = "uk_document_id", columnNames = {"document_id"}))
 public class Person {
 
     @Id
@@ -32,6 +32,7 @@ public class Person {
     @ManyToOne
     @JoinColumn(name = "department_id", nullable = false)
     private Department department;
+
 
     @ManyToMany
     @JoinTable(name = "persons_languages",

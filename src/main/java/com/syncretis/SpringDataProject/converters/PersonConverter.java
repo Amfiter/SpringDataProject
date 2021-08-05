@@ -1,26 +1,14 @@
 package com.syncretis.SpringDataProject.converters;
 
 import com.syncretis.SpringDataProject.dto.PersonDTO;
-import com.syncretis.SpringDataProject.exceptions.DepartmentException;
-import com.syncretis.SpringDataProject.exceptions.LanguageException;
-import com.syncretis.SpringDataProject.exceptions.PersonException;
-import com.syncretis.SpringDataProject.models.Department;
-import com.syncretis.SpringDataProject.models.Document;
-import com.syncretis.SpringDataProject.models.Language;
 import com.syncretis.SpringDataProject.models.Person;
-import com.syncretis.SpringDataProject.repositories.DepartmentRepository;
-import com.syncretis.SpringDataProject.repositories.DocumentRepository;
-import com.syncretis.SpringDataProject.repositories.LanguageRepository;
 import com.syncretis.SpringDataProject.services.DepartmentService;
 import com.syncretis.SpringDataProject.services.DocumentService;
 import com.syncretis.SpringDataProject.services.LanguageService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Component

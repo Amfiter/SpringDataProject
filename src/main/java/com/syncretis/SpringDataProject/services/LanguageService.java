@@ -40,9 +40,8 @@ public class LanguageService {
     }
 
     public void deleteLanguage(Long id) {
-        boolean exists = languageRepository.existsById(id);
-        if (!exists) {
-            throw new IllegalStateException("Language with id = " + id + " does not exists");
+        if (!languageRepository.existsById(id)) {
+            throw new LanguageException(HttpStatus.NOT_FOUND);
         }
         languageRepository.deleteById(id);
     }
@@ -54,14 +53,14 @@ public class LanguageService {
                     language.setName(languageEntity.getName());
                     return languageRepository.save(language);
                 })
-                .orElseThrow(() -> new LanguageException(HttpStatus.BAD_REQUEST));
+                .orElseThrow(() -> new LanguageException(HttpStatus.NOT_FOUND));
     }
 
-    public List<Language> checkAndReturnLanguage(PersonDTO personDTO){
+    public List<Language> checkAndReturnLanguage(PersonDTO personDTO) {
         Language language;
         List<Language> listLanguage = new ArrayList<>();
         for (int i = 0; i < personDTO.getLanguageList().size(); i++) {
-            if(personDTO.getLanguageList().get(i).getId() != null) {
+            if (personDTO.getLanguageList().get(i).getId() != null) {
                 Optional<Language> optional = languageRepository.findById(personDTO.getLanguageList().get(i).getId());
                 if(optional.isPresent()) {
                     language = optional.get();
