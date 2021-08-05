@@ -21,7 +21,8 @@ public class Document {
     @Temporal(TemporalType.DATE)
     private Date expireDate;
 
-    @OneToOne(mappedBy = "document", cascade = CascadeType.REMOVE)
+
+    @OneToOne(mappedBy = "document",cascade = CascadeType.REMOVE)
     private Person person;
 
     public Document() {

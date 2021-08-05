@@ -33,7 +33,8 @@ public class Person {
     @JoinColumn(name = "department_id", nullable = false)
     private Department department;
 
-    @ManyToMany()
+
+    @ManyToMany
     @JoinTable(name = "persons_languages",
             joinColumns = @JoinColumn(name = "person_id"),
             inverseJoinColumns = @JoinColumn(name = "language_id")

@@ -62,8 +62,7 @@ public class LanguageService {
         for (int i = 0; i < personDTO.getLanguageList().size(); i++) {
             if (personDTO.getLanguageList().get(i).getId() != null) {
                 Optional<Language> optional = languageRepository.findById(personDTO.getLanguageList().get(i).getId());
-                System.out.println("нашел optional languageById" + optional);
-                if (optional.isPresent()) {
+                if(optional.isPresent()) {
                     language = optional.get();
                 } else {
                     language = new Language();
@@ -71,8 +70,6 @@ public class LanguageService {
             } else {
                 throw new LanguageException(HttpStatus.BAD_REQUEST);
             }
-            /*newLanguage.setId(personDTO.getLanguageList().get(i).getId());
-            newLanguage.setName(personDTO.getLanguageList().get(i).getName());*/
             listLanguage.add(language);
         }
         return listLanguage;
