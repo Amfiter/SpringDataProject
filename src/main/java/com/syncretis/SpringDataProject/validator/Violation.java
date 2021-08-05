@@ -1,4 +1,4 @@
-package com.syncretis.SpringDataProject.dto;
+package com.syncretis.SpringDataProject.validator;
 
 public class Violation {
     private final String fieldName;

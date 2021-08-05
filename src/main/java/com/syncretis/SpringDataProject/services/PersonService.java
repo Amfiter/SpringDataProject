@@ -54,6 +54,6 @@ public class PersonService {
                     person.setLanguageList(personEntity.getLanguageList());
                     return personRepository.save(person);
                 })
-                .orElseThrow(() -> new PersonException(HttpStatus.BAD_REQUEST));
+                .orElseThrow(() -> new PersonException(HttpStatus.NOT_FOUND));
     }
 }

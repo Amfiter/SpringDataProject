@@ -1,7 +1,7 @@
 package com.syncretis.SpringDataProject.dto;
 
-import com.syncretis.SpringDataProject.Marker;
 import com.syncretis.SpringDataProject.models.Person;
+import com.syncretis.SpringDataProject.util.Marker;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -13,6 +13,7 @@ public class LanguageDTO {
     @Null(groups = Marker.OnCreate.class, message = "should be null")
     @NotNull(groups = Marker.OnUpdate.class, message = "should be not null")
     private Long id;
+
     @NotBlank(message = "should be not blank")
     @Pattern(regexp = "[A-Za-z ]*", message = "should only contain letters")
     private String name;

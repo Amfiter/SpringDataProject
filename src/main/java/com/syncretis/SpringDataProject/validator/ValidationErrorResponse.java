@@ -1,4 +1,4 @@
-package com.syncretis.SpringDataProject.dto;
+package com.syncretis.SpringDataProject.validator;
 
 
 import java.util.List;

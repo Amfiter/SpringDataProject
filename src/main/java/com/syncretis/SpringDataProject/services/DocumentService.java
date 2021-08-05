@@ -53,7 +53,7 @@ public class DocumentService {
                     department.setExpireDate(documentEntity.getExpireDate());
                     return documentRepository.save(department);
                 })
-                .orElseThrow(() -> new DocumentException(HttpStatus.BAD_REQUEST));
+                .orElseThrow(() -> new DocumentException(HttpStatus.NOT_FOUND));
     }
 
     public Document checkAndReturnDocument(PersonDTO personDTO) {

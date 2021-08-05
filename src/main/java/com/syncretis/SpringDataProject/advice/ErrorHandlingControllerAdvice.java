@@ -1,11 +1,8 @@
 package com.syncretis.SpringDataProject.advice;
 
-import com.syncretis.SpringDataProject.exceptions.DepartmentException;
-import com.syncretis.SpringDataProject.exceptions.DocumentException;
-import com.syncretis.SpringDataProject.dto.ValidationErrorResponse;
-import com.syncretis.SpringDataProject.dto.Violation;
-import com.syncretis.SpringDataProject.exceptions.LanguageException;
-import com.syncretis.SpringDataProject.exceptions.PersonException;
+import com.syncretis.SpringDataProject.exceptions.*;
+import com.syncretis.SpringDataProject.validator.ValidationErrorResponse;
+import com.syncretis.SpringDataProject.validator.Violation;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -34,20 +31,35 @@ public class ErrorHandlingControllerAdvice {
     @ExceptionHandler(DocumentException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
     @ResponseBody
-    public String onDocumentException (DocumentException e) { return e.getMessage(); }
+    public String onDocumentNull(DocumentException e) {
+        return e.getMessage();
+    }
 
     @ExceptionHandler(LanguageException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
     @ResponseBody
-    public String onLanguageException (LanguageException e) { return e.getMessage(); }
+    public String onLanguageNull(LanguageException e) {
+        return e.getMessage();
+    }
 
-    @ExceptionHandler(DepartmentException.class)
+    @ExceptionHandler(DepartmentNotFoundException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
     @ResponseBody
-    public String onDepartmentException (DepartmentException e) { return e.getMessage(); }
+    public String onDepartmentNull(DepartmentNotFoundException e) {
+        return e.getMessage();
+    }
+
+    @ExceptionHandler(DepartmentBadRequestException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ResponseBody
+    public String onDepartmentBad(DepartmentBadRequestException e) {
+        return e.getMessage();
+    }
 
     @ExceptionHandler(PersonException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
     @ResponseBody
-    public String onPersonException (PersonException e) { return e.getMessage(); }
+    public String onPersonNull(PersonException e) {
+        return e.getMessage();
+    }
 }

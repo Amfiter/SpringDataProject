@@ -53,7 +53,7 @@ public class LanguageService {
                     language.setName(languageEntity.getName());
                     return languageRepository.save(language);
                 })
-                .orElseThrow(() -> new LanguageException(HttpStatus.BAD_REQUEST));
+                .orElseThrow(() -> new LanguageException(HttpStatus.NOT_FOUND));
     }
 
     public List<Language> checkAndReturnLanguage(PersonDTO personDTO) {

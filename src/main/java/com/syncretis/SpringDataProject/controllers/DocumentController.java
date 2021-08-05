@@ -1,10 +1,9 @@
 package com.syncretis.SpringDataProject.controllers;
 
-import com.syncretis.SpringDataProject.Marker;
 import com.syncretis.SpringDataProject.dto.DocumentDTO;
 import com.syncretis.SpringDataProject.models.Document;
 import com.syncretis.SpringDataProject.services.DocumentService;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.syncretis.SpringDataProject.util.Marker;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -15,9 +14,11 @@ import java.util.List;
 @RestController
 @RequestMapping(path = "api/documents")
 public class DocumentController {
+    private final DocumentService documentService;
 
-    @Autowired
-    private DocumentService documentService;
+    public DocumentController(DocumentService documentService) {
+        this.documentService = documentService;
+    }
 
     @GetMapping
     public List<DocumentDTO> getDocuments() {
