@@ -1,7 +1,7 @@
 package com.syncretis.SpringDataProject.converters;
 
 import com.syncretis.SpringDataProject.dto.DepartmentDTO;
-import com.syncretis.SpringDataProject.models.Department;
+import com.syncretis.SpringDataProject.entities.Department;
 import org.springframework.stereotype.Component;
 
 import java.util.List;

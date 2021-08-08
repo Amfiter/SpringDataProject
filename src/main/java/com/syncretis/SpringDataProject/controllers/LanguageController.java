@@ -1,9 +1,10 @@
 package com.syncretis.SpringDataProject.controllers;
 
 import com.syncretis.SpringDataProject.dto.LanguageDTO;
-import com.syncretis.SpringDataProject.models.Language;
+import com.syncretis.SpringDataProject.entities.Language;
 import com.syncretis.SpringDataProject.services.LanguageService;
 import com.syncretis.SpringDataProject.util.Marker;
+import org.springframework.http.HttpStatus;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -14,6 +15,7 @@ import java.util.List;
 @Validated
 @RequestMapping(path = "api/languages")
 public class LanguageController {
+
     private final LanguageService languageService;
 
     public LanguageController(LanguageService languageService) {

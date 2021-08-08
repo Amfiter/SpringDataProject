@@ -1,7 +1,7 @@
 package com.syncretis.SpringDataProject.converters;
 
 import com.syncretis.SpringDataProject.dto.LanguageDTO;
-import com.syncretis.SpringDataProject.models.Language;
+import com.syncretis.SpringDataProject.entities.Language;
 import org.springframework.stereotype.Component;
 
 import java.util.List;

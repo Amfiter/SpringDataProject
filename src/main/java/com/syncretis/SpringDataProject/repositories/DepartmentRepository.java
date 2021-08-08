@@ -1,6 +1,6 @@
 package com.syncretis.SpringDataProject.repositories;
 
-import com.syncretis.SpringDataProject.models.Department;
+import com.syncretis.SpringDataProject.entities.Department;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;

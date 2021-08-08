@@ -1,9 +1,10 @@
 package com.syncretis.SpringDataProject.controllers;
 
 import com.syncretis.SpringDataProject.dto.DepartmentDTO;
-import com.syncretis.SpringDataProject.models.Department;
+import com.syncretis.SpringDataProject.entities.Department;
 import com.syncretis.SpringDataProject.services.DepartmentService;
 import com.syncretis.SpringDataProject.util.Marker;
+import org.springframework.http.HttpStatus;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -12,6 +13,7 @@ import java.util.List;
 @RestController
 @RequestMapping(path = "api/departments")
 public class DepartmentController {
+
     private final DepartmentService departmentService;
 
     public DepartmentController(DepartmentService departmentService) {

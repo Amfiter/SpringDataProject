@@ -1,4 +1,4 @@
-package com.syncretis.SpringDataProject.advice;
+package com.syncretis.SpringDataProject.validator;
 
 import com.syncretis.SpringDataProject.exceptions.*;
 import com.syncretis.SpringDataProject.validator.ValidationErrorResponse;

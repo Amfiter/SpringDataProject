@@ -4,10 +4,12 @@ import com.syncretis.SpringDataProject.util.Marker;
 
 import javax.validation.Valid;
 import javax.validation.constraints.*;
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.List;
+import java.util.Objects;
 
 public class PersonDTO {
+
     @Null(groups = Marker.OnCreate.class, message = "should be null")
     @NotNull(groups = Marker.OnUpdate.class, message = "should be not null")
     private Long id;
@@ -21,7 +23,7 @@ public class PersonDTO {
     private String secondName;
 
     @Past(message = "should not be in the future")
-    private Date birthday;
+    private LocalDate birthday;
 
     @Valid
     private DocumentDTO document;
@@ -59,11 +61,11 @@ public class PersonDTO {
         this.secondName = secondName;
     }
 
-    public Date getBirthday() {
+    public LocalDate getBirthday() {
         return birthday;
     }
 
-    public void setBirthday(Date birthday) {
+    public void setBirthday(LocalDate birthday) {
         this.birthday = birthday;
     }
 
@@ -89,5 +91,31 @@ public class PersonDTO {
 
     public void setLanguageList(List<LanguageDTO> languageList) {
         this.languageList = languageList;
+    }
+
+    @Override
+    public String toString() {
+        return "PersonDTO{" +
+                "id=" + id +
+                ", firstName='" + firstName + '\'' +
+                ", secondName='" + secondName + '\'' +
+                ", birthday=" + birthday +
+                ", document=" + document +
+                ", department=" + department +
+                ", languageList=" + languageList +
+                '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        PersonDTO personDTO = (PersonDTO) o;
+        return Objects.equals(id, personDTO.id) && Objects.equals(firstName, personDTO.firstName) && Objects.equals(secondName, personDTO.secondName) && Objects.equals(birthday, personDTO.birthday) && Objects.equals(document, personDTO.document) && Objects.equals(department, personDTO.department) && Objects.equals(languageList, personDTO.languageList);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, firstName, secondName, birthday, document, department, languageList);
     }
 }

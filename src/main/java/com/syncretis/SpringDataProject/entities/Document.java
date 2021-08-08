@@ -1,13 +1,15 @@
-package com.syncretis.SpringDataProject.models;
+package com.syncretis.SpringDataProject.entities;
 
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
-import java.util.Date;
+import java.time.LocalDate;
+import java.util.Objects;
 
 @Entity
 @Table(name = "document")
 public class Document {
+
     @Id
     @GeneratedValue(generator = "system-uuid")
     @GenericGenerator(name = "system-uuid", strategy = "uuid")
@@ -18,9 +20,7 @@ public class Document {
     private String number;
 
     @Column(name = "expiry_date", nullable = false)
-    @Temporal(TemporalType.DATE)
-    private Date expireDate;
-
+    private LocalDate expireDate;
 
     @OneToOne(mappedBy = "document",cascade = CascadeType.REMOVE)
     private Person person;
@@ -28,12 +28,12 @@ public class Document {
     public Document() {
     }
 
-    public Document(String number, Date expireDate) {
+    public Document(String number, LocalDate expireDate) {
         this.number = number;
         this.expireDate = expireDate;
     }
 
-    public Document(String number, Date expireDate, Person person) {
+    public Document(String number, LocalDate expireDate, Person person) {
         this.number = number;
         this.expireDate = expireDate;
         this.person = person;
@@ -55,11 +55,11 @@ public class Document {
         this.number = number;
     }
 
-    public Date getExpireDate() {
+    public LocalDate getExpireDate() {
         return expireDate;
     }
 
-    public void setExpireDate(Date expireDate) {
+    public void setExpireDate(LocalDate expireDate) {
         this.expireDate = expireDate;
     }
 
@@ -78,5 +78,18 @@ public class Document {
                 ", number='" + number + '\'' +
                 ", expireDate=" + expireDate +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Document document = (Document) o;
+        return Objects.equals(id, document.id) && Objects.equals(number, document.number) && Objects.equals(expireDate, document.expireDate) && Objects.equals(person, document.person);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, number, expireDate, person);
     }
 }

@@ -1,11 +1,13 @@
-package com.syncretis.SpringDataProject.models;
+package com.syncretis.SpringDataProject.entities;
 
 import javax.persistence.*;
+import java.util.Objects;
 import java.util.Set;
 
 @Entity
 @Table(name = "language")
 public class Language {
+
     @Id
     @GeneratedValue(
             strategy = GenerationType.IDENTITY
@@ -60,5 +62,18 @@ public class Language {
                 ", name='" + name + '\'' +
                 ", persons=" + persons +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Language language = (Language) o;
+        return Objects.equals(id, language.id) && Objects.equals(name, language.name) && Objects.equals(persons, language.persons);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, name, persons);
     }
 }

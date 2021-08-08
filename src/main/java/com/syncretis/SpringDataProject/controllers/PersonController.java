@@ -1,9 +1,10 @@
 package com.syncretis.SpringDataProject.controllers;
 
 import com.syncretis.SpringDataProject.dto.PersonDTO;
-import com.syncretis.SpringDataProject.models.Person;
+import com.syncretis.SpringDataProject.entities.Person;
 import com.syncretis.SpringDataProject.services.PersonService;
 import com.syncretis.SpringDataProject.util.Marker;
+import org.springframework.http.HttpStatus;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -13,6 +14,7 @@ import java.util.List;
 @RestController
 @RequestMapping(path = "api/persons")
 public class PersonController {
+
     private final PersonService personService;
 
     public PersonController(PersonService personService) {

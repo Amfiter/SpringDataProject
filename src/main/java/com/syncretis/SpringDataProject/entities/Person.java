@@ -1,9 +1,10 @@
-package com.syncretis.SpringDataProject.models;
+package com.syncretis.SpringDataProject.entities;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.List;
+import java.util.Objects;
 
 @Entity
 @Table(name = "person", uniqueConstraints = @UniqueConstraint(name = "uk_document_id", columnNames = {"document_id"}))
@@ -22,8 +23,7 @@ public class Person {
     private String secondName;
 
     @Column(name = "birthday", nullable = false)
-    @Temporal(TemporalType.DATE)
-    private Date birthday;
+    private LocalDate birthday;
 
     @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinColumn(name = "document_id", referencedColumnName = "id")
@@ -44,7 +44,7 @@ public class Person {
     public Person() {
     }
 
-    public Person(String firstName, String secondName, Date birthday, Department department, List<Language> languageList, Document document) {
+    public Person(String firstName, String secondName, LocalDate birthday, Department department, List<Language> languageList, Document document) {
         this.firstName = firstName;
         this.secondName = secondName;
         this.birthday = birthday;
@@ -53,7 +53,7 @@ public class Person {
         this.document = document;
     }
 
-    public Person(Long id, String firstName, String secondName, Date birthday, Department department, List<Language> languageList, Document document) {
+    public Person(Long id, String firstName, String secondName, LocalDate birthday, Department department, List<Language> languageList, Document document) {
         this.id = id;
         this.firstName = firstName;
         this.secondName = secondName;
@@ -103,11 +103,11 @@ public class Person {
         this.secondName = secondName;
     }
 
-    public Date getBirthday() {
+    public LocalDate getBirthday() {
         return birthday;
     }
 
-    public void setBirthday(Date birthday) {
+    public void setBirthday(LocalDate birthday) {
         this.birthday = birthday;
     }
 
@@ -130,5 +130,18 @@ public class Person {
                 ", department=" + department +
                 ", languageList=" + languageList +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Person person = (Person) o;
+        return Objects.equals(id, person.id) && Objects.equals(firstName, person.firstName) && Objects.equals(secondName, person.secondName) && Objects.equals(birthday, person.birthday) && Objects.equals(document, person.document) && Objects.equals(department, person.department) && Objects.equals(languageList, person.languageList);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, firstName, secondName, birthday, document, department, languageList);
     }
 }

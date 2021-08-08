@@ -4,7 +4,7 @@ import com.syncretis.SpringDataProject.converters.DocumentConverter;
 import com.syncretis.SpringDataProject.dto.DocumentDTO;
 import com.syncretis.SpringDataProject.dto.PersonDTO;
 import com.syncretis.SpringDataProject.exceptions.DocumentException;
-import com.syncretis.SpringDataProject.models.Document;
+import com.syncretis.SpringDataProject.entities.Document;
 import com.syncretis.SpringDataProject.repositories.DocumentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -15,11 +15,14 @@ import java.util.Optional;
 
 @Service
 public class DocumentService {
-    @Autowired
-    private DocumentRepository documentRepository;
 
-    @Autowired
-    private DocumentConverter documentConverter;
+    private final DocumentRepository documentRepository;
+    private final DocumentConverter documentConverter;
+
+    public DocumentService(DocumentConverter documentConverter, DocumentRepository documentRepository) {
+        this.documentConverter = documentConverter;
+        this.documentRepository = documentRepository;
+    }
 
     public List<DocumentDTO> getDocuments() {
         List<Document> listDocument = documentRepository.findAll();

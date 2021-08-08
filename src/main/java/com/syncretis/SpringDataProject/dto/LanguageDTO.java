@@ -1,12 +1,13 @@
 package com.syncretis.SpringDataProject.dto;
 
-import com.syncretis.SpringDataProject.models.Person;
+import com.syncretis.SpringDataProject.entities.Person;
 import com.syncretis.SpringDataProject.util.Marker;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Null;
 import javax.validation.constraints.Pattern;
+import java.util.Objects;
 import java.util.Set;
 
 public class LanguageDTO {
@@ -48,5 +49,26 @@ public class LanguageDTO {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    @Override
+    public String toString() {
+        return "LanguageDTO{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        LanguageDTO that = (LanguageDTO) o;
+        return Objects.equals(id, that.id) && Objects.equals(name, that.name);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, name);
     }
 }

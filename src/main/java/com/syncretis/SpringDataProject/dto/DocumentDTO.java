@@ -1,10 +1,11 @@
 package com.syncretis.SpringDataProject.dto;
 
-import com.syncretis.SpringDataProject.models.Person;
+import com.syncretis.SpringDataProject.entities.Person;
 import com.syncretis.SpringDataProject.util.Marker;
 
 import javax.validation.constraints.*;
-import java.util.Date;
+import java.time.LocalDate;
+import java.util.Objects;
 
 public class DocumentDTO {
     @Null(groups = Marker.OnCreate.class, message = "should be null")
@@ -16,17 +17,17 @@ public class DocumentDTO {
     private String number;
 
     @Future(message = "should not be in the past")
-    private Date expireDate;
+    private LocalDate expireDate;
 
     public DocumentDTO() {
     }
 
-    public DocumentDTO(String number, Date expireDate) {
+    public DocumentDTO(String number, LocalDate expireDate) {
         this.number = number;
         this.expireDate = expireDate;
     }
 
-    public DocumentDTO(String id, String number, Date expireDate, Person person) {
+    public DocumentDTO(String id, String number, LocalDate expireDate, Person person) {
         this.id = id;
         this.number = number;
         this.expireDate = expireDate;
@@ -48,11 +49,33 @@ public class DocumentDTO {
         this.number = number;
     }
 
-    public Date getExpireDate() {
+    public LocalDate getExpireDate() {
         return expireDate;
     }
 
-    public void setExpireDate(Date expireDate) {
+    public void setExpireDate(LocalDate expireDate) {
         this.expireDate = expireDate;
+    }
+
+    @Override
+    public String toString() {
+        return "DocumentDTO{" +
+                "id='" + id + '\'' +
+                ", number='" + number + '\'' +
+                ", expireDate=" + expireDate +
+                '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        DocumentDTO that = (DocumentDTO) o;
+        return Objects.equals(id, that.id) && Objects.equals(number, that.number) && Objects.equals(expireDate, that.expireDate);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, number, expireDate);
     }
 }

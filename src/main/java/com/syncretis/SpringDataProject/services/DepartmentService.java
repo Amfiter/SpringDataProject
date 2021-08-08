@@ -5,7 +5,7 @@ import com.syncretis.SpringDataProject.dto.DepartmentDTO;
 import com.syncretis.SpringDataProject.dto.PersonDTO;
 import com.syncretis.SpringDataProject.exceptions.DepartmentBadRequestException;
 import com.syncretis.SpringDataProject.exceptions.DepartmentNotFoundException;
-import com.syncretis.SpringDataProject.models.Department;
+import com.syncretis.SpringDataProject.entities.Department;
 import com.syncretis.SpringDataProject.repositories.DepartmentRepository;
 import com.syncretis.SpringDataProject.validator.DepartmentValidator;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,14 +23,15 @@ import java.util.Optional;
 public class DepartmentService {
     private final ResourceBundleMessageSource messageSource = new ResourceBundleMessageSource();
 
-    @Autowired
-    private DepartmentRepository departmentRepository;
+    private final DepartmentRepository departmentRepository;
+    private final DepartmentConverter departmentConverter;
+    private final DepartmentValidator departmentValidator;
 
-    @Autowired
-    private DepartmentConverter departmentConverter;
-
-    @Autowired
-    private DepartmentValidator departmentValidator;
+    public DepartmentService(DepartmentRepository departmentRepository, DepartmentConverter departmentConverter, DepartmentValidator departmentValidator) {
+        this.departmentRepository = departmentRepository;
+        this.departmentConverter = departmentConverter;
+        this.departmentValidator = departmentValidator;
+    }
 
     public List<DepartmentDTO> getDepartments() {
         List<Department> listDepartment = departmentRepository.findAll();
@@ -72,7 +73,6 @@ public class DepartmentService {
         Department department;
         if (personDTO.getDepartment().getId() != null) {
             Optional<Department> optional = departmentRepository.findById(personDTO.getDepartment().getId());
-            System.out.println("нашел optional departmentById" + optional);
             if (optional.isPresent()) {
                 department = optional.get();
             } else {
@@ -87,7 +87,7 @@ public class DepartmentService {
     private void validate(DepartmentDTO departmentDTO) {
         final DataBinder dataBinder = new DataBinder(departmentDTO);
         dataBinder.addValidators(departmentValidator);
-        dataBinder.validate(departmentDTO);
+        dataBinder.validate();
 
         if (dataBinder.getBindingResult().hasErrors()) {
             StringBuilder errorMessage = new StringBuilder();

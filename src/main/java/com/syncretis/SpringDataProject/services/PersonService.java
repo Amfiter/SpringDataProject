@@ -3,7 +3,7 @@ package com.syncretis.SpringDataProject.services;
 import com.syncretis.SpringDataProject.converters.PersonConverter;
 import com.syncretis.SpringDataProject.dto.PersonDTO;
 import com.syncretis.SpringDataProject.exceptions.PersonException;
-import com.syncretis.SpringDataProject.models.Person;
+import com.syncretis.SpringDataProject.entities.Person;
 import com.syncretis.SpringDataProject.repositories.PersonRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -14,11 +14,14 @@ import java.util.stream.Collectors;
 
 @Service
 public class PersonService {
-    @Autowired
-    private PersonRepository personRepository;
 
-    @Autowired
-    private PersonConverter personConverter;
+    private final PersonRepository personRepository;
+    private final PersonConverter personConverter;
+
+    public PersonService(PersonConverter personConverter, PersonRepository personRepository) {
+        this.personConverter = personConverter;
+        this.personRepository = personRepository;
+    }
 
     public List<PersonDTO> getPersons() {
         return personRepository.findAll().stream().map(personEntity -> personConverter.entityToDto(personEntity)).collect(Collectors.toList());

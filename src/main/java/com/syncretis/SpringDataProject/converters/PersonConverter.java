@@ -1,7 +1,7 @@
 package com.syncretis.SpringDataProject.converters;
 
 import com.syncretis.SpringDataProject.dto.PersonDTO;
-import com.syncretis.SpringDataProject.models.Person;
+import com.syncretis.SpringDataProject.entities.Person;
 import com.syncretis.SpringDataProject.services.DepartmentService;
 import com.syncretis.SpringDataProject.services.DocumentService;
 import com.syncretis.SpringDataProject.services.LanguageService;
@@ -15,17 +15,16 @@ import java.util.stream.Collectors;
 public class PersonConverter {
 
     @Autowired
-    private DepartmentConverter departmentConverter;
-    @Autowired
     private DepartmentService departmentService;
     @Autowired
     private DocumentService documentService;
     @Autowired
     private LanguageService languageService;
-    @Autowired
-    private DocumentConverter documentConverter;
-    @Autowired
-    private LanguageConverter languageConverter;
+
+
+    private final DepartmentConverter departmentConverter = new DepartmentConverter();
+    private final DocumentConverter documentConverter = new DocumentConverter();
+    private final LanguageConverter languageConverter = new LanguageConverter();
 
     public PersonDTO entityToDto(Person person) {
         PersonDTO personDTO = new PersonDTO();

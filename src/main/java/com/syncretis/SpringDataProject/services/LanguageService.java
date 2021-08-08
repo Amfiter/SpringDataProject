@@ -4,7 +4,7 @@ import com.syncretis.SpringDataProject.converters.LanguageConverter;
 import com.syncretis.SpringDataProject.dto.LanguageDTO;
 import com.syncretis.SpringDataProject.dto.PersonDTO;
 import com.syncretis.SpringDataProject.exceptions.LanguageException;
-import com.syncretis.SpringDataProject.models.Language;
+import com.syncretis.SpringDataProject.entities.Language;
 import com.syncretis.SpringDataProject.repositories.LanguageRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -16,11 +16,14 @@ import java.util.Optional;
 
 @Service
 public class LanguageService {
-    @Autowired
-    private LanguageRepository languageRepository;
 
-    @Autowired
-    private LanguageConverter languageConverter;
+    private final LanguageRepository languageRepository;
+    private final LanguageConverter languageConverter;
+
+    public LanguageService(LanguageRepository languageRepository, LanguageConverter languageConverter) {
+        this.languageRepository = languageRepository;
+        this.languageConverter = languageConverter;
+    }
 
     public List<LanguageDTO> getLanguages() {
         List<Language> listLanguage = languageRepository.findAll();

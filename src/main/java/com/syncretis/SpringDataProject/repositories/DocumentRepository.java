@@ -1,6 +1,6 @@
 package com.syncretis.SpringDataProject.repositories;
 
-import com.syncretis.SpringDataProject.models.Document;
+import com.syncretis.SpringDataProject.entities.Document;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

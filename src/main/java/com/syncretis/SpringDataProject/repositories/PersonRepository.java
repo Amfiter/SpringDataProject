@@ -1,6 +1,6 @@
 package com.syncretis.SpringDataProject.repositories;
 
-import com.syncretis.SpringDataProject.models.Person;
+import com.syncretis.SpringDataProject.entities.Person;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
@@ -12,5 +12,4 @@ public interface PersonRepository extends JpaRepository<Person, Long> {
     Optional<Person> findPersonByFirstName(@Param("firstName") String firstName);
 
     Optional<Person> findPersonBySecondName(@Param("secondName") String secondName);
-
 }
