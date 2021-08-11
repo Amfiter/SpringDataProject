@@ -3,10 +3,10 @@ package com.syncretis.SpringDataProject.services;
 import com.syncretis.SpringDataProject.converters.LanguageConverter;
 import com.syncretis.SpringDataProject.dto.LanguageDTO;
 import com.syncretis.SpringDataProject.dto.PersonDTO;
-import com.syncretis.SpringDataProject.exceptions.LanguageException;
 import com.syncretis.SpringDataProject.entities.Language;
+import com.syncretis.SpringDataProject.exceptions.DepartmentNotFoundException;
+import com.syncretis.SpringDataProject.exceptions.LanguageException;
 import com.syncretis.SpringDataProject.repositories.LanguageRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
@@ -37,15 +37,13 @@ public class LanguageService {
         return languageDTO;
     }
 
-    public void addNewLanguages(LanguageDTO languageDTO) {
+    public Language addNewLanguages(LanguageDTO languageDTO) {
         Language language = languageConverter.dtoToEntity(languageDTO);
-        languageRepository.save(language);
+        return languageRepository.save(language);
     }
 
     public void deleteLanguage(Long id) {
-        if (!languageRepository.existsById(id)) {
-            throw new LanguageException(HttpStatus.NOT_FOUND);
-        }
+        languageRepository.findById(id).orElseThrow(() -> new LanguageException(HttpStatus.NOT_FOUND));
         languageRepository.deleteById(id);
     }
 
@@ -71,7 +69,7 @@ public class LanguageService {
                     language = new Language();
                 }
             } else {
-                throw new LanguageException(HttpStatus.BAD_REQUEST);
+                throw new LanguageException(HttpStatus.NOT_FOUND);
             }
             listLanguage.add(language);
         }

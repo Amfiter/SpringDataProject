@@ -3,6 +3,7 @@ package com.syncretis.SpringDataProject.services;
 import com.syncretis.SpringDataProject.converters.DocumentConverter;
 import com.syncretis.SpringDataProject.dto.DocumentDTO;
 import com.syncretis.SpringDataProject.dto.PersonDTO;
+import com.syncretis.SpringDataProject.exceptions.DepartmentNotFoundException;
 import com.syncretis.SpringDataProject.exceptions.DocumentException;
 import com.syncretis.SpringDataProject.entities.Document;
 import com.syncretis.SpringDataProject.repositories.DocumentRepository;
@@ -36,27 +37,23 @@ public class DocumentService {
         return documentDTO;
     }
 
-    public void addNewDocument(DocumentDTO documentDTO) {
+    public Document addNewDocument(DocumentDTO documentDTO) {
         Document document = documentConverter.dtoToEntity(documentDTO);
-        documentRepository.save(document);
+        return documentRepository.save(document);
     }
 
     public void deleteDocument(String id) {
-        if (!documentRepository.existsById(id)) {
-            throw new DocumentException(HttpStatus.NOT_FOUND);
-        }
+        documentRepository.findById(id).orElseThrow(() -> new DocumentException(HttpStatus.NOT_FOUND));
         documentRepository.deleteById(id);
     }
 
     public Document updateDocument(DocumentDTO newDocument, String id) {
         Document documentEntity = documentConverter.dtoToEntity(newDocument);
-        return documentRepository.findById(id)
-                .map(department -> {
-                    department.setNumber(documentEntity.getNumber());
-                    department.setExpireDate(documentEntity.getExpireDate());
-                    return documentRepository.save(department);
-                })
-                .orElseThrow(() -> new DocumentException(HttpStatus.NOT_FOUND));
+        Optional<Document> optionalDocument = documentRepository.findById(id);
+        Document document = optionalDocument.orElseThrow(()-> new DocumentException(HttpStatus.NOT_FOUND));
+        document.setNumber(documentEntity.getNumber());
+        document.setExpireDate(documentEntity.getExpireDate());
+        return documentRepository.save(document);
     }
 
     public Document checkAndReturnDocument(PersonDTO personDTO) {
@@ -76,7 +73,7 @@ public class DocumentService {
             if (optional.isPresent()) {
                 document = optional.get();
             } else {
-                throw new DocumentException(HttpStatus.BAD_REQUEST);
+                throw new DocumentException(HttpStatus.NOT_FOUND);
             }
         }
         return document;

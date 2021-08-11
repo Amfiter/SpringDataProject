@@ -14,17 +14,22 @@ import java.util.stream.Collectors;
 @Component
 public class PersonConverter {
 
-    @Autowired
-    private DepartmentService departmentService;
-    @Autowired
-    private DocumentService documentService;
-    @Autowired
-    private LanguageService languageService;
+    private final DepartmentService departmentService;
+    private final DocumentService documentService;
+    private final LanguageService languageService;
 
+    private final DepartmentConverter departmentConverter;
+    private final DocumentConverter documentConverter;
+    private final LanguageConverter languageConverter;
 
-    private final DepartmentConverter departmentConverter = new DepartmentConverter();
-    private final DocumentConverter documentConverter = new DocumentConverter();
-    private final LanguageConverter languageConverter = new LanguageConverter();
+    public PersonConverter(DepartmentConverter departmentConverter, DocumentConverter documentConverter, LanguageConverter languageConverter, DepartmentService departmentService, DocumentService documentService, LanguageService languageService) {
+        this.departmentConverter = departmentConverter;
+        this.documentConverter = documentConverter;
+        this.languageConverter = languageConverter;
+        this.departmentService = departmentService;
+        this.documentService = documentService;
+        this.languageService = languageService;
+    }
 
     public PersonDTO entityToDto(Person person) {
         PersonDTO personDTO = new PersonDTO();

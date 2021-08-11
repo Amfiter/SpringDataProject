@@ -45,49 +45,43 @@ public class DepartmentService {
         return departmentDTO;
     }
 
-    public void addNewDepartment(DepartmentDTO departmentDTO) {
+    public Department addNewDepartment(DepartmentDTO departmentDTO) {
         validate(departmentDTO);
         Department department = departmentConverter.dtoToEntity(departmentDTO);
-        departmentRepository.save(department);
+        return departmentRepository.save(department);
     }
 
     public void deleteDepartment(Long id) {
-        if (!departmentRepository.existsById(id)) {
-            throw new DepartmentNotFoundException(HttpStatus.NOT_FOUND);
-        }
+        departmentRepository.findById(id).orElseThrow(() -> new DepartmentNotFoundException(HttpStatus.NOT_FOUND));
         departmentRepository.deleteById(id);
     }
 
     public Department updateDepartment(DepartmentDTO newDepartment, Long id) {
         validate(newDepartment);
         Department departmentEntity = departmentConverter.dtoToEntity(newDepartment);
-        return departmentRepository.findById(id)
-                .map(department -> {
-                    department.setName(departmentEntity.getName());
-                    return departmentRepository.save(department);
-                })
-                .orElseThrow(() -> new DepartmentNotFoundException(HttpStatus.NOT_FOUND));
+        Optional<Department> optionalDepartment = departmentRepository.findById(id);
+        Department department = optionalDepartment.orElseThrow(() -> new DepartmentNotFoundException(HttpStatus.NOT_FOUND));
+        department.setName(departmentEntity.getName());
+        return departmentRepository.save(department);
     }
 
     public Department checkAndReturnDepartment(PersonDTO personDTO) {
-        Department department;
+        Department department = new Department();
         if (personDTO.getDepartment().getId() != null) {
             Optional<Department> optional = departmentRepository.findById(personDTO.getDepartment().getId());
             if (optional.isPresent()) {
                 department = optional.get();
-            } else {
-                department = new Department();
             }
         } else {
-            throw new DepartmentNotFoundException(HttpStatus.FORBIDDEN);
+            throw new DepartmentNotFoundException(HttpStatus.NOT_FOUND);
         }
         return department;
     }
 
-    private void validate(DepartmentDTO departmentDTO) {
+    public void validate(DepartmentDTO departmentDTO) {
         final DataBinder dataBinder = new DataBinder(departmentDTO);
         dataBinder.addValidators(departmentValidator);
-        dataBinder.validate();
+        dataBinder.validate(departmentDTO);
 
         if (dataBinder.getBindingResult().hasErrors()) {
             StringBuilder errorMessage = new StringBuilder();

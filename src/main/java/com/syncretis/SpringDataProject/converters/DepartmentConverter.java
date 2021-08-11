@@ -31,4 +31,5 @@ public class DepartmentConverter {
     public List<Department> dtoToEntity(List<DepartmentDTO> departmentDTO) {
         return departmentDTO.stream().map(DTO -> dtoToEntity(DTO)).collect(Collectors.toList());
     }
+
 }
