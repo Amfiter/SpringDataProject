@@ -25,11 +25,11 @@ class DocumentConverterTest {
         document.setNumber("12341234");
 
         //when
-        DocumentDTO actual  = documentConverter.entityToDto(document);
+        DocumentDTO actual = documentConverter.entityToDto(document);
 
         //then
-        DocumentDTO expected  = new DocumentDTO();
-        expected .setId("2c91948d7b101e2e017b102165920000");
+        DocumentDTO expected = new DocumentDTO();
+        expected.setId("2c91948d7b101e2e017b102165920000");
         expected.setExpireDate(LocalDate.of(2022, 7, 28));
         expected.setNumber("12341234");
 
@@ -40,13 +40,13 @@ class DocumentConverterTest {
     @DisplayName("shouldConvertDtoToEntity")
     void dtoToEntity() {
         //given
-        DocumentDTO documentDTO  = new DocumentDTO();
-        documentDTO .setId("2c91948d7b101e2e017b102165920000");
+        DocumentDTO documentDTO = new DocumentDTO();
+        documentDTO.setId("2c91948d7b101e2e017b102165920000");
         documentDTO.setExpireDate(LocalDate.of(2022, 7, 28));
         documentDTO.setNumber("12341234");
 
         //when
-        Document actual  = documentConverter.dtoToEntity(documentDTO);
+        Document actual = documentConverter.dtoToEntity(documentDTO);
 
         //then
         Document expected = new Document();
@@ -54,7 +54,7 @@ class DocumentConverterTest {
         expected.setExpireDate(LocalDate.of(2022, 7, 28));
         expected.setNumber("12341234");
         assertThat(actual).isEqualTo(expected);
-        
+
     }
 
     @Test
@@ -77,27 +77,25 @@ class DocumentConverterTest {
         documentList.add(document2);
 
         //when
-        List<DocumentDTO> actual  = documentConverter.entityToDto(documentList);
+        List<DocumentDTO> actual = documentConverter.entityToDto(documentList);
 
         //then
         List<DocumentDTO> expected = new ArrayList<>();
 
-        DocumentDTO documentDTO1  = new DocumentDTO();
-        documentDTO1 .setId("2c91948d7b101e2e017b102165920000");
+        DocumentDTO documentDTO1 = new DocumentDTO();
+        documentDTO1.setId("2c91948d7b101e2e017b102165920000");
         documentDTO1.setExpireDate(LocalDate.of(2022, 7, 28));
         documentDTO1.setNumber("12341234");
 
-        DocumentDTO documentDTO2  = new DocumentDTO();
-        documentDTO2 .setId("2c91948d7b101e2e017b1021659200001");
+        DocumentDTO documentDTO2 = new DocumentDTO();
+        documentDTO2.setId("2c91948d7b101e2e017b1021659200001");
         documentDTO2.setExpireDate(LocalDate.of(2024, 8, 4));
         documentDTO2.setNumber("43214321");
 
         expected.add(documentDTO1);
         expected.add(documentDTO2);
 
-        for (int i = 0; i < expected.size(); i++) {
-            assertThat(actual.get(i)).isEqualTo(expected.get(i));
-        }
+        assertThat(actual).isEqualTo(expected);
     }
 
     @Test
@@ -106,13 +104,13 @@ class DocumentConverterTest {
         //given
         List<DocumentDTO> documentDTOList = new ArrayList<>();
 
-        DocumentDTO documentDTO1  = new DocumentDTO();
-        documentDTO1 .setId("2c91948d7b101e2e017b102165920000");
+        DocumentDTO documentDTO1 = new DocumentDTO();
+        documentDTO1.setId("2c91948d7b101e2e017b102165920000");
         documentDTO1.setExpireDate(LocalDate.of(2022, 7, 28));
         documentDTO1.setNumber("12341234");
 
-        DocumentDTO documentDTO2  = new DocumentDTO();
-        documentDTO2 .setId("2c91948d7b101e2e017b1021659200001");
+        DocumentDTO documentDTO2 = new DocumentDTO();
+        documentDTO2.setId("2c91948d7b101e2e017b1021659200001");
         documentDTO2.setExpireDate(LocalDate.of(2024, 8, 4));
         documentDTO2.setNumber("43214321");
 
@@ -120,7 +118,7 @@ class DocumentConverterTest {
         documentDTOList.add(documentDTO2);
 
         //when
-        List<Document> actual  = documentConverter.dtoToEntity(documentDTOList);
+        List<Document> actual = documentConverter.dtoToEntity(documentDTOList);
 
         //then
         List<Document> expected = new ArrayList<>();
@@ -138,8 +136,6 @@ class DocumentConverterTest {
         expected.add(document1);
         expected.add(document2);
 
-        for (int i = 0; i < expected.size(); i++) {
-            assertThat(actual.get(i)).isEqualTo(expected.get(i));
-        }
+        assertThat(actual).isEqualTo(expected);
     }
 }

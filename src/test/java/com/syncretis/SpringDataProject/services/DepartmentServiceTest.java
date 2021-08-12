@@ -6,17 +6,17 @@ import com.syncretis.SpringDataProject.dto.DocumentDTO;
 import com.syncretis.SpringDataProject.dto.LanguageDTO;
 import com.syncretis.SpringDataProject.dto.PersonDTO;
 import com.syncretis.SpringDataProject.entities.Department;
-import com.syncretis.SpringDataProject.entities.Document;
-import com.syncretis.SpringDataProject.entities.Language;
-import com.syncretis.SpringDataProject.entities.Person;
+import com.syncretis.SpringDataProject.exceptions.DepartmentBadRequestException;
 import com.syncretis.SpringDataProject.exceptions.DepartmentNotFoundException;
 import com.syncretis.SpringDataProject.repositories.DepartmentRepository;
-import com.syncretis.SpringDataProject.validator.DepartmentValidator;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
+import com.syncretis.SpringDataProject.validator.DepartmentDTOValidator;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.mockito.*;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.HttpStatus;
 
 import java.time.LocalDate;
@@ -28,22 +28,18 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 
+@ExtendWith({MockitoExtension.class})
 class DepartmentServiceTest {
 
     @Mock
     DepartmentRepository departmentRepository;
     @Mock
     DepartmentConverter departmentConverter;
-    @Spy
-    DepartmentValidator departmentValidator;
+    @Mock
+    DepartmentDTOValidator departmentDTOValidator;
 
     @InjectMocks
     DepartmentService departmentService;
-
-    @BeforeEach
-    void openMocks() {
-        MockitoAnnotations.openMocks(this);
-    }
 
     @Test
     @DisplayName("shouldReturnAllDepartments")
@@ -176,8 +172,8 @@ class DepartmentServiceTest {
     }
 
     @Test
-    @DisplayName("shouldReturnUpdateDepartment")
-    void updateDepartment() {
+    @DisplayName("shouldReturnUpdateDepartmentIfIsExist")
+    void updateDepartment1() {
         //given
         Department department = new Department();
         department.setName("Department of Hurt");
@@ -187,6 +183,7 @@ class DepartmentServiceTest {
 
         //when
         Mockito.when(departmentConverter.dtoToEntity(departmentDto)).thenReturn(department);
+        Mockito.when(departmentRepository.existsById(1L)).thenReturn(true);
         Mockito.when(departmentRepository.findById(1L)).thenReturn(Optional.of(department));
         Mockito.when(departmentRepository.save(department)).thenReturn(department);
 
@@ -200,40 +197,42 @@ class DepartmentServiceTest {
     }
 
     @Test
-    @DisplayName("shouldReturnErrorDepartmentsIdShouldBeBlank")
-    public void shouldThrowExceptionValidateId() {
+    @DisplayName("shouldReturnUpdateDepartmentIfIsNotExist")
+    void updateDepartment2() {
         //given
-        DepartmentDTO departmentDto1 = new DepartmentDTO(1L, "Department");
+        Department department = new Department();
+        department.setName("Department of Hurt");
+
+        DepartmentDTO departmentDto = new DepartmentDTO();
+        departmentDto.setName("Department of Hurt");
+
+        //when
+        Mockito.when(departmentConverter.dtoToEntity(departmentDto)).thenReturn(department);
+        Mockito.when(departmentRepository.existsById(1L)).thenReturn(false);
 
         //then
-        assertThatThrownBy(() -> departmentService.validate(departmentDto1)).hasMessage("Id should be blank\n");
+        assertThatThrownBy(() -> departmentService.updateDepartment(departmentDto, 1L)).isExactlyInstanceOf(DepartmentNotFoundException.class);
+
     }
 
     @Test
-    @DisplayName("shouldReturnErrorDepartmentsNameShouldBeNotBlank")
-    public void shouldThrowExceptionValidateName() {
-        //given
-        DepartmentDTO departmentDto2 = new DepartmentDTO(null, "");
-
-        //then
-        assertThatThrownBy(() -> departmentService.validate(departmentDto2)).hasMessage("Name should be not blank\n");
-    }
-
-    @Test
-    @DisplayName("shouldReturnErrorDepartmentsNameShouldContainLetter")
+    @DisplayName("shouldReturnErrorDepartmentsValidation")
     public void shouldThrowExceptionValidateLetters() {
         //given
-        DepartmentDTO departmentDto3 = new DepartmentDTO(null, "D3partment");
+        DepartmentDTO departmentDto = new DepartmentDTO("D3partment");
+
+        //when
+        Mockito.doThrow(new DepartmentBadRequestException("Name should only contain letters\n")).when(departmentDTOValidator).dataBinderValidation(departmentDto);
 
         //then
-        assertThatThrownBy(() -> departmentService.validate(departmentDto3)).hasMessage("Name should only contain letters\n");
+        assertThatThrownBy(() -> departmentService.addNewDepartment(departmentDto)).isExactlyInstanceOf(DepartmentBadRequestException.class);
     }
 
     @Test
     @DisplayName("shouldReturnValidDepartment")
     public void shouldValidate() {
         DepartmentDTO departmentDto = new DepartmentDTO("Department");
-        assertDoesNotThrow(() -> departmentService.validate(departmentDto));
+        assertDoesNotThrow(() -> departmentService.addNewDepartment(departmentDto));
     }
 
     @Test
@@ -266,8 +265,8 @@ class DepartmentServiceTest {
         //when
         Mockito.when(departmentRepository.findById(1L)).thenReturn(Optional.of(department));
         Department expected = departmentService.checkAndReturnDepartment(personDTO);
-        //then
 
+        //then
         assertThat(department).isEqualTo(expected);
 
     }
@@ -276,9 +275,6 @@ class DepartmentServiceTest {
     @DisplayName("checkAndReturnDepartmentIfIdIsNull")
     void checkAndReturnDepartmentError() {
         //given
-        Department department = new Department();
-        department.setName("Department of Hurt");
-
         DepartmentDTO departmentDTO = new DepartmentDTO();
         departmentDTO.setName("Department of Hurt");
 
@@ -298,12 +294,44 @@ class DepartmentServiceTest {
         personDTO.setDocument(documentDTO);
         personDTO.setLanguageList(languageListDTO);
 
-        //when
-        Mockito.when(departmentRepository.findById(1L)).thenThrow(new DepartmentNotFoundException(HttpStatus.NOT_FOUND));
-
         //then
         assertThatThrownBy(() -> departmentService.checkAndReturnDepartment(personDTO))
                 .isInstanceOf(DepartmentNotFoundException.class);
+
+    }
+
+    @Test
+    @DisplayName("checkAndReturnDepartmentIfIdIsNotNullAndIsNotPresent")
+    void checkAndReturnDepartmentIsNotPresent() {
+        //given
+        Department department = new Department();
+
+        DepartmentDTO departmentDTO = new DepartmentDTO();
+        departmentDTO.setId(1L);
+        departmentDTO.setName("Department of Hurt");
+
+        DocumentDTO documentDTO = new DocumentDTO();
+        documentDTO.setNumber("12341234");
+        documentDTO.setExpireDate(LocalDate.of(2023, 1, 1));
+
+        List<LanguageDTO> languageListDTO = new ArrayList<>();
+        LanguageDTO languageDTO = new LanguageDTO();
+        languageDTO.setName("English");
+        languageListDTO.add(languageDTO);
+
+        PersonDTO personDTO = new PersonDTO();
+        personDTO.setFirstName("Vladimir");
+        personDTO.setSecondName("Stavitskii");
+        personDTO.setDepartment(departmentDTO);
+        personDTO.setDocument(documentDTO);
+        personDTO.setLanguageList(languageListDTO);
+
+        //when
+        Mockito.when(departmentRepository.findById(1L)).thenReturn(Optional.empty());
+        Department expected = departmentService.checkAndReturnDepartment(personDTO);
+
+        //then
+        assertThat(department).isEqualTo(expected);
 
     }
 }

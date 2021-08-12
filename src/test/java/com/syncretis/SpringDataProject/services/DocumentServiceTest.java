@@ -5,19 +5,16 @@ import com.syncretis.SpringDataProject.dto.DepartmentDTO;
 import com.syncretis.SpringDataProject.dto.DocumentDTO;
 import com.syncretis.SpringDataProject.dto.LanguageDTO;
 import com.syncretis.SpringDataProject.dto.PersonDTO;
-import com.syncretis.SpringDataProject.entities.Department;
 import com.syncretis.SpringDataProject.entities.Document;
-import com.syncretis.SpringDataProject.exceptions.DepartmentNotFoundException;
 import com.syncretis.SpringDataProject.exceptions.DocumentException;
-import com.syncretis.SpringDataProject.exceptions.LanguageException;
 import com.syncretis.SpringDataProject.repositories.DocumentRepository;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.mockito.MockitoAnnotations;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.HttpStatus;
 
 import java.time.LocalDate;
@@ -27,9 +24,8 @@ import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
+@ExtendWith({MockitoExtension.class})
 class DocumentServiceTest {
 
     @Mock
@@ -39,11 +35,6 @@ class DocumentServiceTest {
 
     @InjectMocks
     DocumentService documentService;
-
-    @BeforeEach
-    void openMocks(){
-        MockitoAnnotations.openMocks(this);
-    }
 
     @Test
     @DisplayName("shouldReturnAllDocuments")
@@ -141,7 +132,7 @@ class DocumentServiceTest {
         Mockito.when(documentRepository.findById("qeqeqeqeqeq")).thenThrow(new DocumentException(HttpStatus.NOT_FOUND));
 
         //then
-        assertThatThrownBy(() -> documentService.updateDocument(documentDTO,"qeqeqeqeqeq"))
+        assertThatThrownBy(() -> documentService.updateDocument(documentDTO, "qeqeqeqeqeq"))
                 .isInstanceOf(DocumentException.class);
         Mockito.verify(documentRepository).findById("qeqeqeqeqeq");
     }
@@ -204,7 +195,7 @@ class DocumentServiceTest {
         Mockito.when(documentRepository.findById("qeqeqeqe")).thenReturn(Optional.of(document));
         Mockito.when(documentRepository.save(document)).thenReturn(document);
 
-        Document actualDocument = documentService.updateDocument(documentDto,"qeqeqeqe");
+        Document actualDocument = documentService.updateDocument(documentDto, "qeqeqeqe");
 
         //then
         Mockito.verify(documentRepository).save(document);
@@ -244,8 +235,8 @@ class DocumentServiceTest {
         //when
         Mockito.when(documentRepository.findById("qeqeqeqe")).thenReturn(Optional.of(document));
         Document expected = documentService.checkAndReturnDocument(personDTO);
-        //then
 
+        //then
         assertThat(document).isEqualTo(expected);
 
     }
@@ -279,7 +270,7 @@ class DocumentServiceTest {
         personDTO.setLanguageList(languageListDTO);
 
         //when
-        Mockito.when(documentRepository.findById("qeqeqeqe")).thenThrow(new DocumentException(HttpStatus.NOT_FOUND));
+        Mockito.when(documentRepository.findById("qeqeqeqe")).thenReturn(Optional.empty());
 
         //then
         assertThatThrownBy(() -> documentService.checkAndReturnDocument(personDTO))
@@ -320,5 +311,41 @@ class DocumentServiceTest {
         //then
         assertThatThrownBy(() -> documentService.checkAndReturnDocument(personDTO))
                 .isInstanceOf(DocumentException.class);
+    }
+
+
+    @Test
+    @DisplayName("checkAndReturnDocumentIfIdIsNullButNumberIsNotPresent")
+    void checkAndReturnDepartmentErrorNumberIsNotPresent() {
+        //given
+        Document document = new Document();
+        document.setNumber("12331234");
+        document.setExpireDate(LocalDate.of(2023, 1, 1));
+
+        DepartmentDTO departmentDTO = new DepartmentDTO();
+        departmentDTO.setName("Department of Hurt");
+
+        DocumentDTO documentDTO = new DocumentDTO();
+        documentDTO.setNumber("12331234");
+        documentDTO.setExpireDate(LocalDate.of(2023, 1, 1));
+
+        List<LanguageDTO> languageListDTO = new ArrayList<>();
+        LanguageDTO languageDTO = new LanguageDTO();
+        languageDTO.setName("English");
+        languageListDTO.add(languageDTO);
+
+        PersonDTO personDTO = new PersonDTO();
+        personDTO.setFirstName("Vladimir");
+        personDTO.setSecondName("Stavitskii");
+        personDTO.setDepartment(departmentDTO);
+        personDTO.setDocument(documentDTO);
+        personDTO.setLanguageList(languageListDTO);
+
+        //when
+        Mockito.when(documentRepository.findByNumber("12331234")).thenReturn(Optional.empty());
+        Document expected = documentService.checkAndReturnDocument(personDTO);
+
+        //then
+        assertThat(document).isEqualTo(expected);
     }
 }

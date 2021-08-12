@@ -24,12 +24,12 @@ class DepartmentConverterTest {
         department.setName("Department of test");
 
         //when
-        DepartmentDTO actual  = departmentConverter.entityToDto(department);
+        DepartmentDTO actual = departmentConverter.entityToDto(department);
 
         //then
-        DepartmentDTO expected  = new DepartmentDTO();
-        expected .setId(15L);
-        expected .setName("Department of test");
+        DepartmentDTO expected = new DepartmentDTO();
+        expected.setId(15L);
+        expected.setName("Department of test");
 
         assertThat(actual).isEqualTo(expected);
     }
@@ -70,26 +70,23 @@ class DepartmentConverterTest {
         departmentList.add(department1);
         departmentList.add(department2);
         //when
-        List<DepartmentDTO> actual  = departmentConverter.entityToDto(departmentList);
+        List<DepartmentDTO> actual = departmentConverter.entityToDto(departmentList);
 
         //then
         List<DepartmentDTO> expected = new ArrayList<>();
 
-        DepartmentDTO departmentDTO1  = new DepartmentDTO();
+        DepartmentDTO departmentDTO1 = new DepartmentDTO();
         departmentDTO1.setId(15L);
         departmentDTO1.setName("Department of test1");
 
-        DepartmentDTO departmentDTO2  = new DepartmentDTO();
+        DepartmentDTO departmentDTO2 = new DepartmentDTO();
         departmentDTO2.setId(10L);
         departmentDTO2.setName("Department of test2");
 
         expected.add(departmentDTO1);
         expected.add(departmentDTO2);
 
-        for (int i = 0; i < expected.size(); i++) {
-            assertThat(actual.get(i)).isEqualTo(expected.get(i));
-        }
-
+        assertThat(expected).isEqualTo(actual);
     }
 
     @Test
@@ -98,11 +95,11 @@ class DepartmentConverterTest {
         //given
         List<DepartmentDTO> departmentList = new ArrayList<>();
 
-        DepartmentDTO departmentDTO1  = new DepartmentDTO();
+        DepartmentDTO departmentDTO1 = new DepartmentDTO();
         departmentDTO1.setId(15L);
         departmentDTO1.setName("Department of test1");
 
-        DepartmentDTO departmentDTO2  = new DepartmentDTO();
+        DepartmentDTO departmentDTO2 = new DepartmentDTO();
         departmentDTO2.setId(10L);
         departmentDTO2.setName("Department of test2");
 
@@ -110,7 +107,7 @@ class DepartmentConverterTest {
         departmentList.add(departmentDTO2);
 
         //when
-        List<Department> actual  = departmentConverter.dtoToEntity(departmentList);
+        List<Department> actual = departmentConverter.dtoToEntity(departmentList);
 
         //then
         List<Department> expected = new ArrayList<>();
@@ -126,8 +123,6 @@ class DepartmentConverterTest {
         expected.add(department1);
         expected.add(department2);
 
-        for (int i = 0; i < expected.size(); i++) {
-            assertThat(actual.get(i)).isEqualTo(expected.get(i));
-        }
+        assertThat(actual).isEqualTo(expected);
     }
 }

@@ -23,7 +23,7 @@ class LanguageConverterTest {
         language.setName("English");
 
         //when
-        LanguageDTO actual  = languageConverter.entityToDto(language);
+        LanguageDTO actual = languageConverter.entityToDto(language);
 
         //then
         LanguageDTO expected = new LanguageDTO();
@@ -42,7 +42,7 @@ class LanguageConverterTest {
         languageDTO.setName("English");
 
         //when
-        Language actual  = languageConverter.dtoToEntity(languageDTO);
+        Language actual = languageConverter.dtoToEntity(languageDTO);
 
         //then
         Language expected = new Language();
@@ -69,7 +69,7 @@ class LanguageConverterTest {
         languageList.add(language2);
 
         //when
-        List<LanguageDTO> actual  = languageConverter.entityToDto(languageList);
+        List<LanguageDTO> actual = languageConverter.entityToDto(languageList);
 
         //then
         List<LanguageDTO> expected = new ArrayList<>();
@@ -104,7 +104,7 @@ class LanguageConverterTest {
         languageListDTO.add(languageDTO2);
 
         //when
-        List<Language> actual  = languageConverter.dtoToEntity(languageListDTO);
+        List<Language> actual = languageConverter.dtoToEntity(languageListDTO);
 
         //then
         List<Language> expected = new ArrayList<>();

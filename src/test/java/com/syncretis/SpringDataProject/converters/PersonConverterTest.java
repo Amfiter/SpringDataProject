@@ -24,12 +24,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
-import static org.mockito.Mockito.any;
 import static org.mockito.Mockito.times;
 
 class PersonConverterTest {
     @Mock
-    DepartmentConverter departmentConverter ;
+    DepartmentConverter departmentConverter;
     @Mock
     DocumentConverter documentConverter;
     @Mock
@@ -45,7 +44,7 @@ class PersonConverterTest {
     private PersonConverter personConverter;
 
     @BeforeEach
-    void openMocks(){
+    void openMocks() {
         MockitoAnnotations.openMocks(this);
     }
 
@@ -54,45 +53,47 @@ class PersonConverterTest {
     void entityToDto() {
         //given
         List<Language> languageList = new ArrayList<>();
+        Department department = new Department();
+        Document document = new Document();
 
         Person person = new Person();
         person.setId(12L);
         person.setFirstName("Vladimir");
         person.setSecondName("Stavitskii");
-        person.setBirthday(LocalDate.of(1997,4,30));
-        person.setDepartment(new Department());
-        person.setDocument(new Document());
+        person.setBirthday(LocalDate.of(1997, 4, 30));
+        person.setDepartment(department);
+        person.setDocument(document);
         person.setLanguageList(languageList);
 
         //when
-        DepartmentDTO departmentDTO  = new DepartmentDTO();
+        DepartmentDTO departmentDTO = new DepartmentDTO();
         departmentDTO.setName("Department of death");
 
-        DocumentDTO documentDTO  = new DocumentDTO();
+        DocumentDTO documentDTO = new DocumentDTO();
         documentDTO.setNumber("123456789");
-        documentDTO.setExpireDate(LocalDate.of(2020,2,5));
+        documentDTO.setExpireDate(LocalDate.of(2020, 2, 5));
 
         List<LanguageDTO> languagesDTOS = new ArrayList<>();
         LanguageDTO english = new LanguageDTO();
         english.setName("English");
         languagesDTOS.add(english);
 
-        Mockito.when(departmentConverter.entityToDto(any(Department.class))).thenReturn(departmentDTO);
-        Mockito.when(documentConverter.entityToDto(any(Document.class))).thenReturn(documentDTO);
+        Mockito.when(departmentConverter.entityToDto(department)).thenReturn(departmentDTO);
+        Mockito.when(documentConverter.entityToDto(document)).thenReturn(documentDTO);
         Mockito.when(languageConverter.entityToDto(languageList)).thenReturn(languagesDTOS);
-        PersonDTO actual  = personConverter.entityToDto(person);
+        PersonDTO actual = personConverter.entityToDto(person);
 
         //then
         PersonDTO expected = new PersonDTO();
         expected.setId(12L);
         expected.setFirstName("Vladimir");
         expected.setSecondName("Stavitskii");
-        expected.setBirthday(LocalDate.of(1997,4,30));
+        expected.setBirthday(LocalDate.of(1997, 4, 30));
         expected.setDepartment(departmentDTO);
         expected.setDocument(documentDTO);
         expected.setLanguageList(languagesDTOS);
 
-        Mockito.verify(departmentConverter,times(1)).entityToDto(new Department());
+        Mockito.verify(departmentConverter, times(1)).entityToDto(new Department());
 
         assertThat(actual).isEqualTo(expected);
     }
@@ -107,40 +108,40 @@ class PersonConverterTest {
         person.setId(12L);
         person.setFirstName("Vladimir");
         person.setSecondName("Stavitskii");
-        person.setBirthday(LocalDate.of(1997,4,30));
+        person.setBirthday(LocalDate.of(1997, 4, 30));
         person.setDepartment(new DepartmentDTO());
         person.setDocument(new DocumentDTO());
         person.setLanguageList(languageList);
 
         //when
-        Department department  = new Department();
+        Department department = new Department();
         department.setName("Department of death");
 
-        Document document  = new Document();
+        Document document = new Document();
         document.setNumber("123456789");
-        document.setExpireDate(LocalDate.of(2020,2,5));
+        document.setExpireDate(LocalDate.of(2020, 2, 5));
 
         List<Language> languages = new ArrayList<>();
         Language english = new Language();
         english.setName("English");
         languages.add(english);
 
-        Mockito.when(departmentService.checkAndReturnDepartment(any(PersonDTO.class))).thenReturn(department);
-        Mockito.when(documentService.checkAndReturnDocument(any(PersonDTO.class))).thenReturn(document);
-        Mockito.when(languageService.checkAndReturnLanguage(any(PersonDTO.class))).thenReturn(languages);
-        Person actual  = personConverter.dtoToEntity(person);
+        Mockito.when(departmentService.checkAndReturnDepartment(person)).thenReturn(department);
+        Mockito.when(documentService.checkAndReturnDocument(person)).thenReturn(document);
+        Mockito.when(languageService.checkAndReturnLanguage(person)).thenReturn(languages);
+        Person actual = personConverter.dtoToEntity(person);
 
         //then
         Person expected = new Person();
         expected.setId(12L);
         expected.setFirstName("Vladimir");
         expected.setSecondName("Stavitskii");
-        expected.setBirthday(LocalDate.of(1997,4,30));
+        expected.setBirthday(LocalDate.of(1997, 4, 30));
         expected.setDepartment(department);
         expected.setDocument(document);
         expected.setLanguageList(languages);
 
-        Mockito.verify(departmentService,times(1)).checkAndReturnDepartment(person);
+        Mockito.verify(departmentService).checkAndReturnDepartment(person);
 
         assertThat(actual).isEqualTo(expected);
     }
@@ -156,7 +157,7 @@ class PersonConverterTest {
         person.setId(12L);
         person.setFirstName("Vladimir");
         person.setSecondName("Stavitskii");
-        person.setBirthday(LocalDate.of(1997,4,30));
+        person.setBirthday(LocalDate.of(1997, 4, 30));
         person.setDepartment(new DepartmentDTO());
         person.setDocument(new DocumentDTO());
         person.setLanguageList(languageList);
@@ -164,22 +165,22 @@ class PersonConverterTest {
         personListDTO.add(person);
 
         //when
-        Department department  = new Department();
+        Department department = new Department();
         department.setName("Department of death");
 
-        Document document  = new Document();
+        Document document = new Document();
         document.setNumber("123456789");
-        document.setExpireDate(LocalDate.of(2020,2,5));
+        document.setExpireDate(LocalDate.of(2020, 2, 5));
 
         List<Language> languages = new ArrayList<>();
         Language english = new Language();
         english.setName("English");
         languages.add(english);
 
-        Mockito.when(departmentService.checkAndReturnDepartment(any(PersonDTO.class))).thenReturn(department);
-        Mockito.when(documentService.checkAndReturnDocument(any(PersonDTO.class))).thenReturn(document);
-        Mockito.when(languageService.checkAndReturnLanguage(any(PersonDTO.class))).thenReturn(languages);
-        List<Person> actual  = personConverter.dtoToEntity(personListDTO);
+        Mockito.when(departmentService.checkAndReturnDepartment(person)).thenReturn(department);
+        Mockito.when(documentService.checkAndReturnDocument(person)).thenReturn(document);
+        Mockito.when(languageService.checkAndReturnLanguage(person)).thenReturn(languages);
+        List<Person> actual = personConverter.dtoToEntity(personListDTO);
 
         //then
         List<Person> expectedList = new ArrayList<>();
@@ -188,14 +189,14 @@ class PersonConverterTest {
         expected.setId(12L);
         expected.setFirstName("Vladimir");
         expected.setSecondName("Stavitskii");
-        expected.setBirthday(LocalDate.of(1997,4,30));
+        expected.setBirthday(LocalDate.of(1997, 4, 30));
         expected.setDepartment(department);
         expected.setDocument(document);
         expected.setLanguageList(languages);
 
         expectedList.add(expected);
 
-        Mockito.verify(departmentService,times(1)).checkAndReturnDepartment(person);
+        Mockito.verify(departmentService).checkAndReturnDepartment(person);
 
         assertThat(actual).isEqualTo(expectedList);
     }
@@ -211,7 +212,7 @@ class PersonConverterTest {
         person.setId(12L);
         person.setFirstName("Vladimir");
         person.setSecondName("Stavitskii");
-        person.setBirthday(LocalDate.of(1997,4,30));
+        person.setBirthday(LocalDate.of(1997, 4, 30));
         person.setDepartment(new DepartmentDTO());
         person.setDocument(new DocumentDTO());
         person.setLanguageList(languageList);
@@ -219,22 +220,22 @@ class PersonConverterTest {
         personDTOList.add(person);
 
         //when
-        Department department  = new Department();
+        Department department = new Department();
         department.setName("Department of death");
 
-        Document document  = new Document();
+        Document document = new Document();
         document.setNumber("123456789");
-        document.setExpireDate(LocalDate.of(2020,2,5));
+        document.setExpireDate(LocalDate.of(2020, 2, 5));
 
         List<Language> languages = new ArrayList<>();
         Language english = new Language();
         english.setName("English");
         languages.add(english);
 
-        Mockito.when(departmentService.checkAndReturnDepartment(any(PersonDTO.class))).thenReturn(department);
-        Mockito.when(documentService.checkAndReturnDocument(any(PersonDTO.class))).thenReturn(document);
-        Mockito.when(languageService.checkAndReturnLanguage(any(PersonDTO.class))).thenReturn(languages);
-        List<Person> actual  = personConverter.dtoToEntity(personDTOList);
+        Mockito.when(departmentService.checkAndReturnDepartment(person)).thenReturn(department);
+        Mockito.when(documentService.checkAndReturnDocument(person)).thenReturn(document);
+        Mockito.when(languageService.checkAndReturnLanguage(person)).thenReturn(languages);
+        List<Person> actual = personConverter.dtoToEntity(personDTOList);
 
         //then
         List<Person> expectedList = new ArrayList<>();
@@ -242,14 +243,14 @@ class PersonConverterTest {
         expected.setId(12L);
         expected.setFirstName("Vladimir");
         expected.setSecondName("Stavitskii");
-        expected.setBirthday(LocalDate.of(1997,4,30));
+        expected.setBirthday(LocalDate.of(1997, 4, 30));
         expected.setDepartment(department);
         expected.setDocument(document);
         expected.setLanguageList(languages);
 
         expectedList.add(expected);
 
-        Mockito.verify(departmentService,times(1)).checkAndReturnDepartment(person);
+        Mockito.verify(departmentService).checkAndReturnDepartment(person);
 
         assertThat(actual).isEqualTo(expectedList);
     }

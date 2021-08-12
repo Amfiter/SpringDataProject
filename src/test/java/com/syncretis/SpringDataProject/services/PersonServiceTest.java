@@ -12,13 +12,13 @@ import com.syncretis.SpringDataProject.entities.Person;
 import com.syncretis.SpringDataProject.exceptions.DepartmentNotFoundException;
 import com.syncretis.SpringDataProject.exceptions.PersonException;
 import com.syncretis.SpringDataProject.repositories.PersonRepository;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.mockito.MockitoAnnotations;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.HttpStatus;
 
 import java.time.LocalDate;
@@ -29,6 +29,7 @@ import java.util.Optional;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
+@ExtendWith({MockitoExtension.class})
 class PersonServiceTest {
 
     @Mock
@@ -38,11 +39,6 @@ class PersonServiceTest {
 
     @InjectMocks
     PersonService personService;
-
-    @BeforeEach
-    void openMocks() {
-        MockitoAnnotations.openMocks(this);
-    }
 
     @Test
     @DisplayName("shouldReturnAllPersons")
