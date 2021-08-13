@@ -11,8 +11,9 @@ import org.springframework.web.bind.annotation.RestController;
 public class SpringDataProjectApplication {
 
     public static void main(String[] args) {
-        ConfigurableApplicationContext run = SpringApplication.run(SpringDataProjectApplication.class, args);
+        /*ConfigurableApplicationContext run = SpringApplication.run(SpringDataProjectApplication.class, args);
         Config config = run.getBean("config", Config.class);
-        config.run();
+        config.run();*/
+        SpringApplication.run(SpringDataProjectApplication.class, args);
     }
 }

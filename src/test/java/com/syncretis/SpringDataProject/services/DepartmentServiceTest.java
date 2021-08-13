@@ -158,20 +158,6 @@ class DepartmentServiceTest {
     }
 
     @Test
-    @DisplayName("shouldThrowNotFoundErrorUpdateById")
-    void updateDepartmentError() {
-        DepartmentDTO departmentDTO = new DepartmentDTO();
-        departmentDTO.setName("Department of hurt");
-        //when
-        Mockito.when(departmentRepository.findById(1L)).thenThrow(new DepartmentNotFoundException(HttpStatus.NOT_FOUND));
-
-        //then
-        assertThatThrownBy(() -> departmentService.updateDepartment(departmentDTO, 1L))
-                .isInstanceOf(DepartmentNotFoundException.class);
-        Mockito.verify(departmentRepository).findById(1L);
-    }
-
-    @Test
     @DisplayName("shouldReturnUpdateDepartmentIfIsExist")
     void updateDepartment1() {
         //given

@@ -52,6 +52,22 @@ class DepartmentValidatorTest {
     @Test
     @DisplayName("validDepartmentShouldSuccessValidation ")
     public void error4() {
+        // TODO: "Stavitskii Vladimir"  13.08.2021 => написать when then также попытаться написать токен[Вчера (12:54)] Georgii RaznikovЗадача по Spring Security:
+        //
+        //
+        //Нужно добавить в текущее приложение OAuth2 аутентификацию/авторизацию (Implicit Flow)
+        //
+        //
+        //
+        //Authorization Server
+        //
+        //Resource Server
+        //
+        //Добавить роли ROLE_USER и ROLE_ADMIN
+        //
+        //Пароли пользователей храним в памяти (кто быстро закончит – можно сделать в БД + BCryptEncoder)
+        //
+        //
         DepartmentDTO departmentDTO = new DepartmentDTO();
         departmentDTO.setName("Department");
         departmentValidator.validate(departmentDTO, bindException);
