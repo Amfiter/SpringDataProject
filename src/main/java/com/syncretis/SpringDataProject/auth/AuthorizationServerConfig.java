@@ -10,7 +10,6 @@ import org.springframework.context.annotation.Import;
 import org.springframework.security.config.annotation.web.configuration.OAuth2AuthorizationServerConfiguration;
 import org.springframework.security.oauth2.core.AuthorizationGrantType;
 import org.springframework.security.oauth2.core.ClientAuthenticationMethod;
-import org.springframework.security.oauth2.core.oidc.OidcScopes;
 import org.springframework.security.oauth2.server.authorization.client.InMemoryRegisteredClientRepository;
 import org.springframework.security.oauth2.server.authorization.client.RegisteredClient;
 import org.springframework.security.oauth2.server.authorization.client.RegisteredClientRepository;
@@ -31,14 +30,15 @@ public class AuthorizationServerConfig {
         RegisteredClient registeredClient = RegisteredClient.withId(UUID.randomUUID().toString())
                 .clientId("messaging-client") // пункт 6
                 .clientSecret("secret")       //пункт 7
-                .clientAuthenticationMethod(ClientAuthenticationMethod.BASIC)
+                .authorizationGrantType(AuthorizationGrantType.IMPLICIT)// пункт 2
                 .authorizationGrantType(AuthorizationGrantType.AUTHORIZATION_CODE)// пункт 2
-                .authorizationGrantType(AuthorizationGrantType.CLIENT_CREDENTIALS)
-                .redirectUri("http://localhost:8080/login/oauth2/code/articles-client-oidc")
+//                .authorizationGrantType(AuthorizationGrantType.CLIENT_CREDENTIALS)
+                .redirectUri("http://localhost:8080/login/oauth2/code/messaging-client-oidc")
                 .redirectUri("http://localhost:8080/authorized") //пункт 3
                 .scope("message.read") //пункт 8
                 .clientSettings(clientSettings -> clientSettings.requireUserConsent(true))
                 .build();
+
         System.out.println(registeredClient);
         return new InMemoryRegisteredClientRepository(registeredClient);
     }
