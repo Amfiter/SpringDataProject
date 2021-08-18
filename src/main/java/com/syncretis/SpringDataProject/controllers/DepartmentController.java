@@ -5,6 +5,8 @@ import com.syncretis.SpringDataProject.entities.Department;
 import com.syncretis.SpringDataProject.services.DepartmentService;
 import com.syncretis.SpringDataProject.util.Marker;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -21,6 +23,7 @@ public class DepartmentController {
     }
 
     @GetMapping
+//    @Secured({"ROLE_USER","ROLE_ADMIN"})
     public List<DepartmentDTO> getDepartment() {
         return departmentService.getDepartments();
     }

@@ -28,7 +28,7 @@ public class OAuth2AuthorizationServerConfig extends AuthorizationServerConfigur
                 .withClient("client")
                 .scopes("read", "write")
                 .authorizedGrantTypes("password")
-                .accessTokenValiditySeconds(60)
+                .accessTokenValiditySeconds(300)
                 .refreshTokenValiditySeconds(20000);
     }
 
