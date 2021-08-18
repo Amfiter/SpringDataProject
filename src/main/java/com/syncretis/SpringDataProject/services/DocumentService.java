@@ -50,7 +50,7 @@ public class DocumentService {
     public Document updateDocument(DocumentDTO newDocument, String id) {
         Document documentEntity = documentConverter.dtoToEntity(newDocument);
         Optional<Document> optionalDocument = documentRepository.findById(id);
-        Document document = optionalDocument.orElseThrow(()-> new DocumentException(HttpStatus.NOT_FOUND));
+        Document document = optionalDocument.orElseThrow(() -> new DocumentException(HttpStatus.NOT_FOUND));
         document.setNumber(documentEntity.getNumber());
         document.setExpireDate(documentEntity.getExpireDate());
         return documentRepository.save(document);

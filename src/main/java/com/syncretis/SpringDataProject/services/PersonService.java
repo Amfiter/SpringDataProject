@@ -40,14 +40,14 @@ public class PersonService {
     }
 
     public void deletePersons(Long id) {
-        personRepository.findById(id).orElseThrow(()-> new PersonException(HttpStatus.NOT_FOUND));
+        personRepository.findById(id).orElseThrow(() -> new PersonException(HttpStatus.NOT_FOUND));
         personRepository.deleteById(id);
     }
 
     public Person updatePerson(PersonDTO newPerson, Long id) {
         Person personEntity = personConverter.dtoToEntity(newPerson);
         Optional<Person> optionalPerson = personRepository.findById(id);
-        Person person = optionalPerson.orElseThrow(()-> new PersonException(HttpStatus.NOT_FOUND));
+        Person person = optionalPerson.orElseThrow(() -> new PersonException(HttpStatus.NOT_FOUND));
         person.setFirstName(personEntity.getFirstName());
         person.setSecondName(personEntity.getSecondName());
         person.setBirthday(personEntity.getBirthday());

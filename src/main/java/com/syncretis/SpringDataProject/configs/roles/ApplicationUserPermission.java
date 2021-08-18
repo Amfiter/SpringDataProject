@@ -1,4 +1,4 @@
-package com.syncretis.SpringDataProject.auth;
+package com.syncretis.SpringDataProject.configs.roles;
 
 public enum ApplicationUserPermission {
     USER_READ("user:read"),

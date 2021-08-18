@@ -1,19 +1,14 @@
-package com.syncretis.SpringDataProject.auth;
+package com.syncretis.SpringDataProject.configs.roles;
 
 
-import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
 import java.util.List;
-import java.util.Set;
 import java.util.stream.Collectors;
 
-import static com.syncretis.SpringDataProject.auth.ApplicationUserPermission.*;
-
-
 public enum ApplicationUserRole {
-    USER(List.of(USER_READ)),
-    ADMIN(List.of(ADMIN_READ,ADMIN_WRITE));
+    USER(List.of(ApplicationUserPermission.USER_READ)),
+    ADMIN(List.of(ApplicationUserPermission.ADMIN_READ, ApplicationUserPermission.ADMIN_WRITE));
 
     private final List<ApplicationUserPermission> permissions;
 
@@ -25,7 +20,7 @@ public enum ApplicationUserRole {
         return permissions;
     }
 
-    public List<SimpleGrantedAuthority> getGrantedAuthorities(){
+    public List<SimpleGrantedAuthority> getGrantedAuthorities() {
         List<SimpleGrantedAuthority> permissions = getPermissions().stream()
                 .map(permission -> new SimpleGrantedAuthority(permission.getPermission()))
                 .collect(Collectors.toList());

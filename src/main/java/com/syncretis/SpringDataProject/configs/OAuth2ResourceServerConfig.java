@@ -1,8 +1,7 @@
-package com.syncretis.SpringDataProject.auth;
+package com.syncretis.SpringDataProject.configs;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
-import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableResourceServer;
 import org.springframework.security.oauth2.config.annotation.web.configuration.ResourceServerConfigurerAdapter;
@@ -10,8 +9,9 @@ import org.springframework.security.oauth2.config.annotation.web.configurers.Res
 import org.springframework.security.oauth2.provider.token.DefaultTokenServices;
 import org.springframework.security.oauth2.provider.token.TokenStore;
 
-import static com.syncretis.SpringDataProject.auth.ApplicationUserPermission.*;
-import static com.syncretis.SpringDataProject.auth.ApplicationUserRole.*;
+import static com.syncretis.SpringDataProject.configs.roles.ApplicationUserPermission.*;
+import static com.syncretis.SpringDataProject.configs.roles.ApplicationUserRole.*;
+
 
 @Configuration
 @EnableResourceServer
@@ -22,6 +22,7 @@ public class OAuth2ResourceServerConfig extends ResourceServerConfigurerAdapter 
 
     public OAuth2ResourceServerConfig(TokenStore tokenStore) {
         this.tokenStore = tokenStore;
+
     }
 
     @Override
@@ -39,12 +40,13 @@ public class OAuth2ResourceServerConfig extends ResourceServerConfigurerAdapter 
     public void configure(final HttpSecurity http) throws Exception {
         http.authorizeRequests()
                 .antMatchers("/oauth/token/**").permitAll()
-                .antMatchers(HttpMethod.GET,"/api/departments/**").hasAnyRole(USER.name(),ADMIN.name())
-                .antMatchers(HttpMethod.GET,"/api/**").hasRole(ADMIN.name())
-                .antMatchers(HttpMethod.POST,"/api/**").hasAuthority(ADMIN_WRITE.getPermission())
-                .antMatchers(HttpMethod.DELETE,"/api/**").hasAuthority(ADMIN_WRITE.getPermission())
-                .antMatchers(HttpMethod.PUT,"/api/**").hasAuthority(ADMIN_WRITE.getPermission())
+                .antMatchers(HttpMethod.GET, "/api/departments/**").hasAnyRole(USER.name(), ADMIN.name())
+                .antMatchers(HttpMethod.GET, "/api/**").hasRole(ADMIN.name())
+                .antMatchers(HttpMethod.POST, "/api/**").hasAuthority(ADMIN_WRITE.getPermission())
+                .antMatchers(HttpMethod.DELETE, "/api/**").hasAuthority(ADMIN_WRITE.getPermission())
+                .antMatchers(HttpMethod.PUT, "/api/**").hasAuthority(ADMIN_WRITE.getPermission())
                 .anyRequest().authenticated();
     }
+
 
 }

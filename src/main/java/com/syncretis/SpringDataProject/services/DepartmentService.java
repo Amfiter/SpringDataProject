@@ -40,7 +40,8 @@ public class DepartmentService {
     }
 
     public Department addNewDepartment(DepartmentDTO departmentDTO) {
-        departmentDTOValidator.dataBinderValidation(departmentDTO);;
+        departmentDTOValidator.dataBinderValidation(departmentDTO);
+        ;
         Department department = departmentConverter.dtoToEntity(departmentDTO);
         return departmentRepository.save(department);
     }
@@ -54,10 +55,10 @@ public class DepartmentService {
         Department department;
         departmentDTOValidator.dataBinderValidation(newDepartment);
         Department departmentEntity = departmentConverter.dtoToEntity(newDepartment);
-        if(departmentRepository.existsById(id)){
+        if (departmentRepository.existsById(id)) {
             department = departmentRepository.findById(id).orElse(null);
             department.setName(departmentEntity.getName());
-        }else{
+        } else {
             throw new DepartmentNotFoundException(HttpStatus.NOT_FOUND);
         }
         return departmentRepository.save(department);

@@ -63,7 +63,7 @@ public class LanguageService {
         for (int i = 0; i < personDTO.getLanguageList().size(); i++) {
             if (personDTO.getLanguageList().get(i).getId() != null) {
                 Optional<Language> optional = languageRepository.findById(personDTO.getLanguageList().get(i).getId());
-                if(optional.isPresent()) {
+                if (optional.isPresent()) {
                     language = optional.get();
                 } else {
                     language = new Language();

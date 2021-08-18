@@ -8,6 +8,7 @@ import java.time.LocalDate;
 import java.util.Objects;
 
 public class DocumentDTO {
+
     @Null(groups = Marker.OnCreate.class, message = "should be null")
     @NotNull(groups = Marker.OnUpdate.class, message = "should be not null")
     private String id;

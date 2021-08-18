@@ -1,4 +1,4 @@
-package com.syncretis.SpringDataProject.auth;
+package com.syncretis.SpringDataProject.configs;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -9,7 +9,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 public class PasswordConfig {
 
     @Bean
-    public PasswordEncoder passwordEncoder(){
+    public PasswordEncoder passwordEncoder() {
         return NoOpPasswordEncoder.getInstance();
     }
 }

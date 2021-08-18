@@ -1,4 +1,4 @@
-package com.syncretis.SpringDataProject.configs;
+package com.syncretis.SpringDataProject.util;
 
 import com.syncretis.SpringDataProject.SpringDataProjectApplication;
 import com.syncretis.SpringDataProject.repositories.DepartmentRepository;

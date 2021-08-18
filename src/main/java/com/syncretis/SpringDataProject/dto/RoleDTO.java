@@ -1,16 +1,16 @@
 package com.syncretis.SpringDataProject.dto;
 
-import com.syncretis.SpringDataProject.entities.Person;
 import com.syncretis.SpringDataProject.util.Marker;
+import org.springframework.security.core.GrantedAuthority;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Null;
 import javax.validation.constraints.Pattern;
 import java.util.Objects;
-import java.util.Set;
+import java.util.StringJoiner;
 
-public class LanguageDTO {
+public class RoleDTO implements GrantedAuthority {
 
     @Null(groups = Marker.OnCreate.class, message = "should be null")
     @NotNull(groups = Marker.OnUpdate.class, message = "should be not null")
@@ -20,18 +20,14 @@ public class LanguageDTO {
     @Pattern(regexp = "[A-Za-z ]*", message = "should only contain letters")
     private String name;
 
-    public LanguageDTO() {
+    public RoleDTO() {
     }
 
-    public LanguageDTO(String name) {
-        this.name = name;
+    public RoleDTO(Long id) {
+        this.id = id;
     }
 
-    public LanguageDTO(String name, Set<Person> persons) {
-        this.name = name;
-    }
-
-    public LanguageDTO(Long id, String name, Set<Person> persons) {
+    public RoleDTO(Long id, String name) {
         this.id = id;
         this.name = name;
     }
@@ -53,19 +49,25 @@ public class LanguageDTO {
     }
 
     @Override
-    public String toString() {
-        return "LanguageDTO{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                '}';
+    public String getAuthority() {
+        return getName();
+    }
+
+    @Override
+    public String
+    toString() {
+        return new StringJoiner(", ", RoleDTO.class.getSimpleName() + "[", "]")
+                .add("id=" + id)
+                .add("name='" + name + "'")
+                .toString();
     }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        LanguageDTO that = (LanguageDTO) o;
-        return Objects.equals(id, that.id) && Objects.equals(name, that.name);
+        RoleDTO roleDTO = (RoleDTO) o;
+        return Objects.equals(id, roleDTO.id) && Objects.equals(name, roleDTO.name);
     }
 
     @Override

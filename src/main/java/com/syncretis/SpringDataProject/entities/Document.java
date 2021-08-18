@@ -22,7 +22,7 @@ public class Document {
     @Column(name = "expiry_date", nullable = false)
     private LocalDate expireDate;
 
-    @OneToOne(mappedBy = "document",cascade = CascadeType.REMOVE)
+    @OneToOne(mappedBy = "document", cascade = CascadeType.REMOVE)
     private Person person;
 
     public Document() {
