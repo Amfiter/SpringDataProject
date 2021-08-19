@@ -27,7 +27,7 @@ public class OAuth2AuthorizationServerConfig extends AuthorizationServerConfigur
                 .withClient("client")
                 .scopes("read", "write")
                 .authorizedGrantTypes("password")
-                .accessTokenValiditySeconds(300)
+                .accessTokenValiditySeconds(600)
                 .refreshTokenValiditySeconds(20000);
     }
 
@@ -56,7 +56,7 @@ public class OAuth2AuthorizationServerConfig extends AuthorizationServerConfigur
     @Bean
     public JwtAccessTokenConverter accessTokenConverter() {
         JwtAccessTokenConverter converter = new JwtAccessTokenConverter();
-        converter.setSigningKey("123");
+        converter.setSigningKey("qwerty");
         return converter;
     }
 

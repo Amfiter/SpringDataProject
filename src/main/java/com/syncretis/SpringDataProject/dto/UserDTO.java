@@ -1,9 +1,10 @@
 package com.syncretis.SpringDataProject.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.syncretis.SpringDataProject.entities.Role;
 import com.syncretis.SpringDataProject.util.Marker;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
@@ -13,7 +14,7 @@ import javax.validation.constraints.Pattern;
 import java.util.Collection;
 import java.util.Set;
 
-public class UserDTO implements UserDetails {
+public class UserDTO {
 
     @Null(groups = Marker.OnCreate.class, message = "should be null")
     @NotNull(groups = Marker.OnUpdate.class, message = "should be not null")
@@ -52,41 +53,22 @@ public class UserDTO implements UserDetails {
         this.id = id;
     }
 
-    @Override
     public String getUsername() {
         return username;
-    }
-
-    @Override
-    public boolean isAccountNonExpired() {
-        return true;
-    }
-
-    @Override
-    public boolean isAccountNonLocked() {
-        return true;
-    }
-
-    @Override
-    public boolean isCredentialsNonExpired() {
-        return true;
-    }
-
-    @Override
-    public boolean isEnabled() {
-        return true;
     }
 
     public void setUsername(String username) {
         this.username = username;
     }
 
-    @Override
+    @JsonIgnore
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return getRoles();
     }
 
-    @Override
+    @JsonIgnore
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     public String getPassword() {
         return password;
     }

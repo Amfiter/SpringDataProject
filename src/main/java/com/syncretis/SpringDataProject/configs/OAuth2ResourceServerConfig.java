@@ -40,6 +40,7 @@ public class OAuth2ResourceServerConfig extends ResourceServerConfigurerAdapter 
     public void configure(final HttpSecurity http) throws Exception {
         http.authorizeRequests()
                 .antMatchers("/oauth/token/**").permitAll()
+                .antMatchers(HttpMethod.GET,"/api/weather").permitAll()
                 .antMatchers(HttpMethod.GET, "/api/departments/**").hasAnyRole(USER.name(), ADMIN.name())
                 .antMatchers(HttpMethod.GET, "/api/**").hasRole(ADMIN.name())
                 .antMatchers(HttpMethod.POST, "/api/**").hasAuthority(ADMIN_WRITE.getPermission())
