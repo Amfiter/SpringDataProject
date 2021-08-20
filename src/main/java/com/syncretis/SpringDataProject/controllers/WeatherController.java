@@ -22,10 +22,16 @@ public class WeatherController {
         this.weatherService = weatherService;
     }
 
-    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    public OpenWeather getWeather(@CurrentSecurityContext(expression="authentication?.name")
+    @GetMapping(path="/okhttp",produces = MediaType.APPLICATION_JSON_VALUE)
+    public String getWeatherOkHttp(@CurrentSecurityContext(expression="authentication?.name")
                                               String username) {
-        return weatherService.getWeatherByUsername(username);
+        return weatherService.getWeatherByUsernameOkHttp(username);
+    }
+
+    @GetMapping(path="/resttemplate",produces = MediaType.APPLICATION_JSON_VALUE)
+    public OpenWeather getWeatherRestTemplate(@CurrentSecurityContext(expression="authentication?.name")
+                                          String username) {
+        return weatherService.getWeatherByUsernameRestTemplate(username);
     }
 
     @GetMapping(value="/openweather",produces = MediaType.APPLICATION_JSON_VALUE)

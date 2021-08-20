@@ -1,5 +1,7 @@
 package com.syncretis.SpringDataProject.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import org.springframework.security.core.GrantedAuthority;
 
 import javax.persistence.*;
@@ -49,6 +51,8 @@ public class Role implements GrantedAuthority {
         this.name = name;
     }
 
+    @JsonIgnore
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     public Set<User> getUsers() {
         return users;
     }
