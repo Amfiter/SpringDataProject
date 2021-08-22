@@ -4,7 +4,6 @@ import com.syncretis.SpringDataProject.converters.LanguageConverter;
 import com.syncretis.SpringDataProject.dto.LanguageDTO;
 import com.syncretis.SpringDataProject.dto.PersonDTO;
 import com.syncretis.SpringDataProject.entities.Language;
-import com.syncretis.SpringDataProject.exceptions.DepartmentNotFoundException;
 import com.syncretis.SpringDataProject.exceptions.LanguageException;
 import com.syncretis.SpringDataProject.repositories.LanguageRepository;
 import org.springframework.http.HttpStatus;
@@ -48,13 +47,15 @@ public class LanguageService {
     }
 
     public Language updateLanguage(LanguageDTO newLanguage, Long id) {
+        Language language;
         Language languageEntity = languageConverter.dtoToEntity(newLanguage);
-        return languageRepository.findById(id)
-                .map(language -> {
-                    language.setName(languageEntity.getName());
-                    return languageRepository.save(language);
-                })
-                .orElseThrow(() -> new LanguageException(HttpStatus.NOT_FOUND));
+        if (languageRepository.existsById(id)) {
+            language = languageRepository.findById(id).orElse(null);
+            language.setName(languageEntity.getName());
+        } else {
+            throw new LanguageException(HttpStatus.NOT_FOUND);
+        }
+        return languageRepository.save(language);
     }
 
     public List<Language> checkAndReturnLanguage(PersonDTO personDTO) {

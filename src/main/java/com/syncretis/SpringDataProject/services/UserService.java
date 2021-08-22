@@ -46,17 +46,19 @@ public class UserService implements UserDetailsService {
         userRepository.deleteById(id);
     }
 
-    public User updateUser(UserDTO newLanguage, Long id) {
-        User userEntity = userConverter.dtoToEntity(newLanguage);
-        return userRepository.findById(id)
-                .map(user -> {
-                    user.setUsername(userEntity.getUsername());
-                    user.setPassword(userEntity.getPassword());
-                    user.setCity(userEntity.getCity());
-                    user.setRoles(userEntity.getRoles());
-                    return userRepository.save(user);
-                })
-                .orElseThrow(() -> new UserException(HttpStatus.NOT_FOUND));
+    public User updateUser(UserDTO newUser, Long id) {
+        User user;
+        User userEntity = userConverter.dtoToEntity(newUser);
+        if (userRepository.existsById(id)) {
+            user = userRepository.findById(id).orElse(null);
+            user.setUsername(userEntity.getUsername());
+            user.setPassword(userEntity.getPassword());
+            user.setCity(userEntity.getCity());
+            user.setRoles(userEntity.getRoles());
+        } else {
+            throw new UserException(HttpStatus.NOT_FOUND);
+        }
+        return userRepository.save(user);
     }
 
     @Override
@@ -64,6 +66,4 @@ public class UserService implements UserDetailsService {
         User user = userRepository.findByUsername(username).orElseThrow(() -> new UsernameNotFoundException("User does not exist"));
         return user;
     }
-    
-    
 }

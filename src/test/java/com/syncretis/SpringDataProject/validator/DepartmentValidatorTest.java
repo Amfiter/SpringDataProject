@@ -19,8 +19,11 @@ class DepartmentValidatorTest {
     @Test
     @DisplayName("shouldThrowExceptionWhenNameShouldBeNotNull")
     public void error1() {
+        //given
         DepartmentDTO departmentDTO = new DepartmentDTO();
+        //when
         departmentValidator.validate(departmentDTO, bindException);
+        //then
         Mockito.verify(bindException).rejectValue("name", "name.empty", "Name should be not blank");
         Mockito.verify(bindException, Mockito.times(0)).rejectValue("id", "id.notEmpty", "Id should be blank");
         Mockito.verify(bindException, Mockito.times(0)).rejectValue("name", "name.invalid", "Name should only contain letters");
@@ -29,10 +32,13 @@ class DepartmentValidatorTest {
     @Test
     @DisplayName("shouldThrowExceptionWhenIdShouldBeNull")
     public void error2() {
+        //given
         DepartmentDTO departmentDTO = new DepartmentDTO();
         departmentDTO.setId(1L);
         departmentDTO.setName("Department");
+        //when
         departmentValidator.validate(departmentDTO, bindException);
+        //then
         Mockito.verify(bindException).rejectValue("id", "id.notEmpty", "Id should be blank");
         Mockito.verify(bindException, Mockito.times(0)).rejectValue("name", "name.empty", "Name should be not blank");
         Mockito.verify(bindException, Mockito.times(0)).rejectValue("name", "name.invalid", "Name should only contain letters");
@@ -41,9 +47,12 @@ class DepartmentValidatorTest {
     @Test
     @DisplayName("shouldThrowExceptionWhenNameShouldContainOnlyLetter")
     public void error3() {
+        //given
         DepartmentDTO departmentDTO = new DepartmentDTO();
         departmentDTO.setName("D3partment");
+        //when
         departmentValidator.validate(departmentDTO, bindException);
+        //then
         Mockito.verify(bindException).rejectValue("name", "name.invalid", "Name should only contain letters");
         Mockito.verify(bindException, Mockito.times(0)).rejectValue("name", "name.empty", "Name should be not blank");
         Mockito.verify(bindException, Mockito.times(0)).rejectValue("id", "id.notEmpty", "Id should be blank");
@@ -52,16 +61,12 @@ class DepartmentValidatorTest {
     @Test
     @DisplayName("validDepartmentShouldSuccessValidation ")
     public void error4() {
-        // TODO: "Stavitskii Vladimir"  13.08.2021 => написать when then также попытаться написать токен
-        //  Задача по Spring Security:
-        //Нужно добавить в текущее приложение OAuth2 аутентификацию/авторизацию (Implicit Flow)
-        //Authorization Server
-        //Resource Server
-        //Добавить роли ROLE_USER и ROLE_ADMIN
-        //Пароли пользователей храним в памяти (кто быстро закончит – можно сделать в БД + BCryptEncoder)
+        //given
         DepartmentDTO departmentDTO = new DepartmentDTO();
         departmentDTO.setName("Department");
+        //when
         departmentValidator.validate(departmentDTO, bindException);
+        //then
         Mockito.verify(bindException, Mockito.times(0)).rejectValue("name", "name.invalid", "Name should only contain letters");
         Mockito.verify(bindException, Mockito.times(0)).rejectValue("name", "name.empty", "Name should be not blank");
         Mockito.verify(bindException, Mockito.times(0)).rejectValue("id", "id.notEmpty", "Id should be blank");

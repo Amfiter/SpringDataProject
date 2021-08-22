@@ -9,7 +9,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class PersonService {
@@ -43,17 +42,23 @@ public class PersonService {
         personRepository.findById(id).orElseThrow(() -> new PersonException(HttpStatus.NOT_FOUND));
         personRepository.deleteById(id);
     }
+    
+
 
     public Person updatePerson(PersonDTO newPerson, Long id) {
+        Person person;
         Person personEntity = personConverter.dtoToEntity(newPerson);
-        Optional<Person> optionalPerson = personRepository.findById(id);
-        Person person = optionalPerson.orElseThrow(() -> new PersonException(HttpStatus.NOT_FOUND));
-        person.setFirstName(personEntity.getFirstName());
-        person.setSecondName(personEntity.getSecondName());
-        person.setBirthday(personEntity.getBirthday());
-        person.setDepartment(personEntity.getDepartment());
-        person.setDocument(personEntity.getDocument());
-        person.setLanguageList(personEntity.getLanguageList());
+        if (personRepository.existsById(id)) {
+            person = personRepository.findById(id).orElse(null);
+            person.setFirstName(personEntity.getFirstName());
+            person.setSecondName(personEntity.getSecondName());
+            person.setBirthday(personEntity.getBirthday());
+            person.setDepartment(personEntity.getDepartment());
+            person.setDocument(personEntity.getDocument());
+            person.setLanguageList(personEntity.getLanguageList());
+        } else {
+            throw new PersonException(HttpStatus.NOT_FOUND);
+        }
         return personRepository.save(person);
     }
 }

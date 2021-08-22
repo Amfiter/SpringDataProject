@@ -123,21 +123,6 @@ class DocumentServiceTest {
     }
 
     @Test
-    @DisplayName("shouldThrowNotFoundErrorUpdateById")
-    void updateDocumentError() {
-        DocumentDTO documentDTO = new DocumentDTO();
-        documentDTO.setNumber("123124");
-        documentDTO.setExpireDate(LocalDate.of(2023, 1, 1));
-        //when
-        Mockito.when(documentRepository.findById("qeqeqeqeqeq")).thenThrow(new DocumentException(HttpStatus.NOT_FOUND));
-
-        //then
-        assertThatThrownBy(() -> documentService.updateDocument(documentDTO, "qeqeqeqeqeq"))
-                .isInstanceOf(DocumentException.class);
-        Mockito.verify(documentRepository).findById("qeqeqeqeqeq");
-    }
-
-    @Test
     @DisplayName("shouldSaveDocument")
     void addNewDocument() {
         //given
@@ -176,32 +161,6 @@ class DocumentServiceTest {
         //then
         Mockito.verify(documentRepository).findById("qeqeqeqe");
         Mockito.verify(documentRepository).deleteById("qeqeqeqe");
-    }
-
-    @Test
-    @DisplayName("shouldReturnUpdateDocument")
-    void updateDocument() {
-        //given
-        Document document = new Document();
-        document.setNumber("12341234");
-        document.setExpireDate(LocalDate.of(2023, 1, 1));
-
-        DocumentDTO documentDto = new DocumentDTO();
-        documentDto.setNumber("12341234");
-        documentDto.setExpireDate(LocalDate.of(2023, 1, 1));
-
-        //when
-        Mockito.when(documentConverter.dtoToEntity(documentDto)).thenReturn(document);
-        Mockito.when(documentRepository.findById("qeqeqeqe")).thenReturn(Optional.of(document));
-        Mockito.when(documentRepository.save(document)).thenReturn(document);
-
-        Document actualDocument = documentService.updateDocument(documentDto, "qeqeqeqe");
-
-        //then
-        Mockito.verify(documentRepository).save(document);
-        Mockito.verify(documentRepository).findById("qeqeqeqe");
-        Mockito.verify(documentConverter).dtoToEntity(documentDto);
-        assertThat(actualDocument).isEqualTo(document);
     }
 
     @Test
@@ -347,5 +306,52 @@ class DocumentServiceTest {
 
         //then
         assertThat(document).isEqualTo(expected);
+    }
+
+    @Test
+    @DisplayName("shouldReturnUpdateDocumentIfIsExist")
+    void updateDocument1() {
+        //given
+        Document document = new Document();
+        document.setNumber("12341234");
+        document.setExpireDate(LocalDate.of(2023, 1, 1));
+
+        DocumentDTO documentDto = new DocumentDTO();
+        documentDto.setNumber("12341234");
+        documentDto.setExpireDate(LocalDate.of(2023, 1, 1));
+
+        //when
+        Mockito.when(documentConverter.dtoToEntity(documentDto)).thenReturn(document);
+        Mockito.when(documentRepository.existsById("12341234")).thenReturn(true);
+        Mockito.when(documentRepository.findById("12341234")).thenReturn(Optional.of(document));
+        Mockito.when(documentRepository.save(document)).thenReturn(document);
+
+        Document actualDocument = documentService.updateDocument(documentDto, "12341234");
+
+        //then
+        Mockito.verify(documentRepository).save(document);
+        Mockito.verify(documentRepository).findById("12341234");
+        Mockito.verify(documentConverter).dtoToEntity(documentDto);
+        assertThat(actualDocument).isEqualTo(document);
+    }
+
+    @Test
+    @DisplayName("shouldReturnUpdateDocumentIfIsNotExist")
+    void updateDocument2() {
+        //given
+        Document document = new Document();
+        document.setNumber("12341234");
+        document.setExpireDate(LocalDate.of(2023, 1, 1));
+
+        DocumentDTO documentDto = new DocumentDTO();
+        documentDto.setNumber("12341234");
+        documentDto.setExpireDate(LocalDate.of(2023, 1, 1));
+
+        //when
+        Mockito.when(documentConverter.dtoToEntity(documentDto)).thenReturn(document);
+        Mockito.when(documentRepository.existsById("12341234")).thenReturn(false);
+
+        //then
+        assertThatThrownBy(() -> documentService.updateDocument(documentDto, "12341234")).isExactlyInstanceOf(DocumentException.class);
     }
 }

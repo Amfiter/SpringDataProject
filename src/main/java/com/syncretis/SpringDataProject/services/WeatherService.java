@@ -5,7 +5,6 @@ import com.squareup.okhttp.HttpUrl;
 import com.squareup.okhttp.OkHttpClient;
 import com.squareup.okhttp.Request;
 import com.squareup.okhttp.Response;
-import com.syncretis.SpringDataProject.entities.User;
 import com.syncretis.SpringDataProject.exceptions.UserException;
 import com.syncretis.SpringDataProject.model.NewOpenWeather;
 import com.syncretis.SpringDataProject.model.OpenWeather;
@@ -31,8 +30,7 @@ public class WeatherService {
 
     public OpenWeather getWeatherByUsernameRestTemplate(String username) {
         RestTemplate restTemplate = new RestTemplate();
-        User user = userRepository.findByUsername(username).orElseThrow(() -> new UserException(HttpStatus.NOT_FOUND));
-        String location = user.getCity();
+        String location = userRepository.findByUsername(username).orElseThrow(() -> new UserException(HttpStatus.NOT_FOUND)).getCity();
         OpenWeather openWeather = restTemplate.getForObject(url + "data/2.5/weather?q=" + location + "&appid=" + key, OpenWeather.class);
         return openWeather;
     }

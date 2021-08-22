@@ -65,7 +65,6 @@ public class DepartmentService {
     }
 
     public Department checkAndReturnDepartment(PersonDTO personDTO) {
-        //TODO: "Stavitskii Vladimir"  12.08.2021 =>  change findById to existsById in services update method and checkAndReturn method
         Department department = new Department();
         if (personDTO.getDepartment().getId() != null) {
             Optional<Department> optional = departmentRepository.findById(personDTO.getDepartment().getId());

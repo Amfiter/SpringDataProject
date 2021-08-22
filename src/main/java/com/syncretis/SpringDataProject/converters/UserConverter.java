@@ -2,7 +2,6 @@ package com.syncretis.SpringDataProject.converters;
 
 import com.syncretis.SpringDataProject.dto.UserDTO;
 import com.syncretis.SpringDataProject.entities.User;
-import com.syncretis.SpringDataProject.services.RoleService;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -10,16 +9,6 @@ import java.util.stream.Collectors;
 
 @Component
 public class UserConverter {
-
-    private final RoleService userConverter;
-
-    private final RoleConverter roleConverter;
-
-    public UserConverter(RoleService userConverter, RoleConverter roleConverter) {
-        this.userConverter = userConverter;
-        this.roleConverter = roleConverter;
-    }
-
 
     public UserDTO entityToDto(User user) {
         UserDTO userDTO = new UserDTO();

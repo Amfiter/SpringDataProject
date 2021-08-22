@@ -240,8 +240,8 @@ class PersonServiceTest {
     }
 
     @Test
-    @DisplayName("shouldReturnUpdatePerson")
-    void updatePerson() {
+    @DisplayName("shouldReturnUpdateUserIfIsExist")
+    void updateUser1() {
         //given
         Department department = new Department();
         department.setName("Department of Hurt");
@@ -283,16 +283,68 @@ class PersonServiceTest {
 
         //when
         Mockito.when(personConverter.dtoToEntity(personDTO)).thenReturn(person);
+        Mockito.when(personRepository.existsById(1L)).thenReturn(true);
         Mockito.when(personRepository.findById(1L)).thenReturn(Optional.of(person));
         Mockito.when(personRepository.save(person)).thenReturn(person);
 
-        Person actualDepartment = personService.updatePerson(personDTO, 1L);
+        Person actualUser = personService.updatePerson(personDTO, 1L);
 
         //then
         Mockito.verify(personRepository).save(person);
         Mockito.verify(personRepository).findById(1L);
         Mockito.verify(personConverter).dtoToEntity(personDTO);
-        assertThat(actualDepartment).isEqualTo(person);
+        assertThat(actualUser).isEqualTo(person);
+    }
+
+    @Test
+    @DisplayName("shouldReturnUpdateUserIfIsNotExist")
+    void updateUser2() {
+        //given
+        Department department = new Department();
+        department.setName("Department of Hurt");
+
+        Document document = new Document();
+        document.setNumber("12341234");
+        document.setExpireDate(LocalDate.of(2023, 1, 1));
+
+        List<Language> languageList = new ArrayList<>();
+        Language language = new Language();
+        language.setName("English");
+        languageList.add(language);
+
+        Person person = new Person();
+        person.setFirstName("Vladimir");
+        person.setSecondName("Stavitskii");
+        person.setDepartment(department);
+        person.setDocument(document);
+        person.setLanguageList(languageList);
+
+        DepartmentDTO departmentDTO = new DepartmentDTO();
+        departmentDTO.setName("Department of Hurt");
+
+        DocumentDTO documentDTO = new DocumentDTO();
+        documentDTO.setNumber("12341234");
+        documentDTO.setExpireDate(LocalDate.of(2023, 1, 1));
+
+        List<LanguageDTO> languageListDTO = new ArrayList<>();
+        LanguageDTO languageDTO = new LanguageDTO();
+        languageDTO.setName("English");
+        languageListDTO.add(languageDTO);
+
+        PersonDTO personDTO = new PersonDTO();
+        personDTO.setFirstName("Vladimir");
+        personDTO.setSecondName("Stavitskii");
+        personDTO.setDepartment(departmentDTO);
+        personDTO.setDocument(documentDTO);
+        personDTO.setLanguageList(languageListDTO);
+
+        //when
+        Mockito.when(personConverter.dtoToEntity(personDTO)).thenReturn(person);
+        Mockito.when(personRepository.existsById(1L)).thenReturn(false);
+
+        //then
+        assertThatThrownBy(() -> personService.updatePerson(personDTO, 1L)).isExactlyInstanceOf(PersonException.class);
+
     }
 
     @Test
@@ -318,35 +370,4 @@ class PersonServiceTest {
                 .isInstanceOf(PersonException.class);
         Mockito.verify(personRepository).findById(1L);
     }
-
-    @Test
-    @DisplayName("shouldThrowNotFoundErrorUpdateById")
-    void updateDepartmentError() {
-        DepartmentDTO departmentDTO = new DepartmentDTO();
-        departmentDTO.setName("Department of Hurt");
-
-        DocumentDTO documentDTO = new DocumentDTO();
-        documentDTO.setNumber("12341234");
-        documentDTO.setExpireDate(LocalDate.of(2023, 1, 1));
-
-        List<LanguageDTO> languageListDTO = new ArrayList<>();
-        LanguageDTO languageDTO = new LanguageDTO();
-        languageDTO.setName("English");
-        languageListDTO.add(languageDTO);
-
-        PersonDTO personDTO = new PersonDTO();
-        personDTO.setFirstName("Vladimir");
-        personDTO.setSecondName("Stavitskii");
-        personDTO.setDepartment(departmentDTO);
-        personDTO.setDocument(documentDTO);
-        personDTO.setLanguageList(languageListDTO);
-        //when
-        Mockito.when(personRepository.findById(1L)).thenThrow(new PersonException(HttpStatus.NOT_FOUND));
-
-        //then
-        assertThatThrownBy(() -> personService.updatePerson(personDTO, 1L))
-                .isInstanceOf(PersonException.class);
-        Mockito.verify(personRepository).findById(1L);
-    }
-
 }

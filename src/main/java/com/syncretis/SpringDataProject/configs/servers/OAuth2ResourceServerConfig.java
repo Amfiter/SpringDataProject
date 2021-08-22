@@ -1,4 +1,4 @@
-package com.syncretis.SpringDataProject.configs;
+package com.syncretis.SpringDataProject.configs.servers;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;

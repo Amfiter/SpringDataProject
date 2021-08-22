@@ -3,11 +3,9 @@ package com.syncretis.SpringDataProject.services;
 import com.syncretis.SpringDataProject.converters.DocumentConverter;
 import com.syncretis.SpringDataProject.dto.DocumentDTO;
 import com.syncretis.SpringDataProject.dto.PersonDTO;
-import com.syncretis.SpringDataProject.exceptions.DepartmentNotFoundException;
-import com.syncretis.SpringDataProject.exceptions.DocumentException;
 import com.syncretis.SpringDataProject.entities.Document;
+import com.syncretis.SpringDataProject.exceptions.DocumentException;
 import com.syncretis.SpringDataProject.repositories.DocumentRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
@@ -47,12 +45,18 @@ public class DocumentService {
         documentRepository.deleteById(id);
     }
 
+    
+
     public Document updateDocument(DocumentDTO newDocument, String id) {
+        Document document;
         Document documentEntity = documentConverter.dtoToEntity(newDocument);
-        Optional<Document> optionalDocument = documentRepository.findById(id);
-        Document document = optionalDocument.orElseThrow(() -> new DocumentException(HttpStatus.NOT_FOUND));
-        document.setNumber(documentEntity.getNumber());
-        document.setExpireDate(documentEntity.getExpireDate());
+        if (documentRepository.existsById(id)) {
+            document = documentRepository.findById(id).orElse(null);
+            document.setNumber(documentEntity.getNumber());
+            document.setExpireDate(documentEntity.getExpireDate());
+        } else {
+            throw new DocumentException(HttpStatus.NOT_FOUND);
+        }
         return documentRepository.save(document);
     }
 

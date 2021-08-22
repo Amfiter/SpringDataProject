@@ -108,20 +108,6 @@ class LanguageServiceTest {
     }
 
     @Test
-    @DisplayName("shouldThrowNotFoundErrorUpdateById")
-    void updateLanguageError() {
-        LanguageDTO languageDTO = new LanguageDTO();
-        languageDTO.setName("English");
-        //when
-        Mockito.when(languageRepository.findById(1L)).thenThrow(new LanguageException(HttpStatus.NOT_FOUND));
-
-        //then
-        assertThatThrownBy(() -> languageService.updateLanguage(languageDTO, 1L))
-                .isInstanceOf(LanguageException.class);
-        Mockito.verify(languageRepository).findById(1L);
-    }
-
-    @Test
     @DisplayName("shouldSaveLanguage")
     void addNewLanguage() {
         //given
@@ -160,28 +146,46 @@ class LanguageServiceTest {
     }
 
     @Test
-    @DisplayName("shouldReturnUpdateLanguage")
-    void updateLanguage() {
+    @DisplayName("shouldReturnUpdateLanguageIfIsExist")
+    void updateLanguage1() {
         //given
         Language language = new Language();
-        language.setName("English");
+        language.setName("Language");
 
-        LanguageDTO languageDTO = new LanguageDTO();
-        languageDTO.setName("English");
+        LanguageDTO languageDto = new LanguageDTO();
+        languageDto.setName("Language");
 
         //when
-
-        Mockito.when(languageConverter.dtoToEntity(languageDTO)).thenReturn(language);
+        Mockito.when(languageConverter.dtoToEntity(languageDto)).thenReturn(language);
+        Mockito.when(languageRepository.existsById(1L)).thenReturn(true);
         Mockito.when(languageRepository.findById(1L)).thenReturn(Optional.of(language));
         Mockito.when(languageRepository.save(language)).thenReturn(language);
 
-        Language actualLanguage = languageService.updateLanguage(languageDTO, 1L);
+        Language actualLanguage = languageService.updateLanguage(languageDto, 1L);
 
         //then
-        Mockito.verify(languageConverter).dtoToEntity(languageDTO);
-        Mockito.verify(languageRepository).findById(1L);
         Mockito.verify(languageRepository).save(language);
+        Mockito.verify(languageRepository).findById(1L);
+        Mockito.verify(languageConverter).dtoToEntity(languageDto);
         assertThat(actualLanguage).isEqualTo(language);
+    }
+
+    @Test
+    @DisplayName("shouldReturnUpdateLanguageIfIsNotExist")
+    void updateLanguage2() {
+        //given
+        Language language = new Language();
+        language.setName("Language");
+
+        LanguageDTO languageDto = new LanguageDTO();
+        languageDto.setName("Language");
+
+        //when
+        Mockito.when(languageConverter.dtoToEntity(languageDto)).thenReturn(language);
+        Mockito.when(languageRepository.existsById(1L)).thenReturn(false);
+
+        //then
+        assertThatThrownBy(() -> languageService.updateLanguage(languageDto, 1L)).isExactlyInstanceOf(LanguageException.class);
     }
 
     @Test

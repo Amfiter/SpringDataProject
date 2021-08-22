@@ -12,7 +12,9 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Null;
 import javax.validation.constraints.Pattern;
 import java.util.Collection;
+import java.util.Objects;
 import java.util.Set;
+import java.util.StringJoiner;
 
 public class UserDTO {
 
@@ -85,4 +87,27 @@ public class UserDTO {
         this.roles = roles;
     }
 
+    @Override
+    public String toString() {
+        return new StringJoiner(", ", UserDTO.class.getSimpleName() + "[", "]")
+                .add("id=" + id)
+                .add("username='" + username + "'")
+                .add("password='" + password + "'")
+                .add("city='" + city + "'")
+                .add("roles=" + roles)
+                .toString();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        UserDTO userDTO = (UserDTO) o;
+        return Objects.equals(id, userDTO.id) && Objects.equals(username, userDTO.username) && Objects.equals(password, userDTO.password) && Objects.equals(city, userDTO.city) && Objects.equals(roles, userDTO.roles);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, username, password, city, roles);
+    }
 }

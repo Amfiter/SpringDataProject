@@ -1,4 +1,4 @@
-package com.syncretis.SpringDataProject.configs;
+package com.syncretis.SpringDataProject.configs.security;
 
 import com.syncretis.SpringDataProject.services.UserService;
 import org.springframework.beans.factory.annotation.Qualifier;

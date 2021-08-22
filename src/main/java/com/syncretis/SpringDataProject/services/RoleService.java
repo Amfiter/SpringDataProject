@@ -43,32 +43,15 @@ public class RoleService {
         roleRepository.deleteById(id);
     }
 
-    public Role updateRole(RoleDTO newLanguage, Long id) {
-        Role languageEntity = roleConverter.dtoToEntity(newLanguage);
-        return roleRepository.findById(id)
-                .map(role -> {
-                    role.setName(languageEntity.getName());
-                    return roleRepository.save(role);
-                })
-                .orElseThrow(() -> new RoleException(HttpStatus.NOT_FOUND));
+    public Role updateRole(RoleDTO newRole, Long id) {
+        Role role;
+        Role roleEntity = roleConverter.dtoToEntity(newRole);
+        if (roleRepository.existsById(id)) {
+            role = roleRepository.findById(id).orElse(null);
+            role.setName(roleEntity.getName());
+        } else {
+            throw new RoleException(HttpStatus.NOT_FOUND);
+        }
+        return roleRepository.save(role);
     }
-
-//    public List<Role> checkAndReturnRole(PersonDTO personDTO) {
-//        Role role;
-//        List<Role> listRole = new ArrayList<>();
-//        for (int i = 0; i < personDTO.getLanguageList().size(); i++) {
-//            if (personDTO.getLanguageList().get(i).getId() != null) {
-//                Optional<Role> optional = roleRepository.findById(personDTO.getLanguageList().get(i).getId());
-//                if(optional.isPresent()) {
-//                    role = optional.get();
-//                } else {
-//                    role = new Role();
-//                }
-//            } else {
-//                throw new RoleException(HttpStatus.NOT_FOUND);
-//            }
-//            listRole.add(role);
-//        }
-//        return listRole;
-//    }
 }
