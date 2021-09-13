@@ -1,17 +1,17 @@
 package com.syncretis.SpringDataProject.dto;
 
-import com.syncretis.SpringDataProject.util.Marker;
-
 import javax.validation.Valid;
-import javax.validation.constraints.*;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Null;
+import javax.validation.constraints.Past;
+import javax.validation.constraints.Pattern;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Objects;
 
 public class PersonDTO {
 
-    @Null(groups = Marker.OnCreate.class, message = "should be null")
-    @NotNull(groups = Marker.OnUpdate.class, message = "should be not null")
+    @Null(message = "should be null")
     private Long id;
 
     @NotBlank(message = "should be not blank")

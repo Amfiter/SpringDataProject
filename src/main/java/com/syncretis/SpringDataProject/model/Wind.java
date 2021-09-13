@@ -12,4 +12,8 @@ public class Wind {
     public double getSpeed() {
         return speed;
     }
+
+    public void setSpeed(double speed) {
+        this.speed = speed;
+    }
 }

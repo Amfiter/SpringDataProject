@@ -42,4 +42,28 @@ public class Main {
     public Long getHumidity() {
         return humidity;
     }
+
+    public void setTemp(double temp) {
+        this.temp = temp;
+    }
+
+    public void setFeelsLike(double feelsLike) {
+        this.feelsLike = feelsLike;
+    }
+
+    public void setTempMin(double tempMin) {
+        this.tempMin = tempMin;
+    }
+
+    public void setTempMax(double tempMax) {
+        this.tempMax = tempMax;
+    }
+
+    public void setPressure(double pressure) {
+        this.pressure = pressure;
+    }
+
+    public void setHumidity(Long humidity) {
+        this.humidity = humidity;
+    }
 }

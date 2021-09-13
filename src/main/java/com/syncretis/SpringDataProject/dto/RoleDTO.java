@@ -1,10 +1,8 @@
 package com.syncretis.SpringDataProject.dto;
 
-import com.syncretis.SpringDataProject.util.Marker;
 import org.springframework.security.core.GrantedAuthority;
 
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Null;
 import javax.validation.constraints.Pattern;
 import java.util.Objects;
@@ -12,8 +10,7 @@ import java.util.StringJoiner;
 
 public class RoleDTO implements GrantedAuthority {
 
-    @Null(groups = Marker.OnCreate.class, message = "should be null")
-    @NotNull(groups = Marker.OnUpdate.class, message = "should be not null")
+    @Null(message = "should be null")
     private Long id;
 
     @NotBlank(message = "should be not blank")

@@ -28,4 +28,20 @@ public class OpenWeather {
     public List<Weather> getWeather() {
         return weather;
     }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setMain(Main main) {
+        this.main = main;
+    }
+
+    public void setWind(Wind wind) {
+        this.wind = wind;
+    }
+
+    public void setWeather(List<Weather> weather) {
+        this.weather = weather;
+    }
 }

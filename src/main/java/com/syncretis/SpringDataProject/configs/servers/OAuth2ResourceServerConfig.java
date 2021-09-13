@@ -48,6 +48,4 @@ public class OAuth2ResourceServerConfig extends ResourceServerConfigurerAdapter 
                 .antMatchers(HttpMethod.PUT, "/api/**").hasAuthority(ADMIN_WRITE.getPermission())
                 .anyRequest().authenticated();
     }
-
-
 }
